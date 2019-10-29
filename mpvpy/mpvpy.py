@@ -13,7 +13,7 @@ ic.lineWrapWidth, _ = get_terminal_size((80, 20))
 #ic.disable()
 
 
-def play(media):
+def play(media, verbose=False):
     ic(media)
     media = Path(media)
     command = ["/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
@@ -24,15 +24,17 @@ def play(media):
         command.append("--gpu-context=auto")
 
     command.append(media)
-    ic(command)
+    if verbose:
+        ic(command)
     run(command)
 
 
 @click.command()
 @click.argument("media")
-def cli(media):
+@click.option("--verbose", is_flag=True)
+def cli(media, verbose):
     #play("/home/user/_youtube/sources/youtube/Thomas Winningham/th0ma5w__20110723__10 PRINT CHR$(205.5+RND(1));  - GOTO 10__m9joBLOZVEo.mp4")
-    play(media)
+    play(media, verbose)
     pass
 
 
