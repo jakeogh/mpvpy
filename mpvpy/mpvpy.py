@@ -30,11 +30,12 @@ def play(media, verbose=False):
 
 
 @click.command()
-@click.argument("media")
+@click.argument("media", nargs=-1)
 @click.option("--verbose", is_flag=True)
 def cli(media, verbose):
     #play("/home/user/_youtube/sources/youtube/Thomas Winningham/th0ma5w__20110723__10 PRINT CHR$(205.5+RND(1));  - GOTO 10__m9joBLOZVEo.mp4")
-    play(media, verbose)
+    for m in media:
+        play(m, verbose)
     pass
 
 
