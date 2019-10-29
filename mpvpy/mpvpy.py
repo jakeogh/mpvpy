@@ -31,7 +31,8 @@ def play(media):
 @click.command()
 @click.argument("media")
 def cli(media):
-    play("/home/user/_youtube/sources/youtube/Thomas Winningham/th0ma5w__20110723__10 PRINT CHR$(205.5+RND(1));  - GOTO 10__m9joBLOZVEo.mp4")
+    #play("/home/user/_youtube/sources/youtube/Thomas Winningham/th0ma5w__20110723__10 PRINT CHR$(205.5+RND(1));  - GOTO 10__m9joBLOZVEo.mp4")
+    play(media)
     pass
 
 
