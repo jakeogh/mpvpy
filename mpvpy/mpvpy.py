@@ -13,10 +13,12 @@ ic.lineWrapWidth, _ = get_terminal_size((80, 20))
 #ic.disable()
 
 
-def play(media, verbose=False):
+def play(media, verbose=False, video=True):
     ic(media)
     media = Path(media)
     command = ["/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
+    if not video:
+        command.append("--video=no")
     try:
         run_command("pidof X")
     except CalledProcessError:
@@ -31,12 +33,12 @@ def play(media, verbose=False):
 
 @click.command()
 @click.argument("media", nargs=-1)
+@click.option("--novideo", is_flag=True)
 @click.option("--verbose", is_flag=True)
-def cli(media, verbose):
-    #play("/home/user/_youtube/sources/youtube/Thomas Winningham/th0ma5w__20110723__10 PRINT CHR$(205.5+RND(1));  - GOTO 10__m9joBLOZVEo.mp4")
+def cli(media, novideo, verbose):
+    video = not novideo
     for m in media:
-        play(m, verbose)
-    pass
+        play(media=m, video=video, verbose=verbose)
 
 
 if __name__ == "__main__":
