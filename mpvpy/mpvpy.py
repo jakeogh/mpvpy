@@ -10,12 +10,10 @@ from icecream import ic
 ic.configureOutput(includeContext=True)
 ic.lineWrapWidth, _ = get_terminal_size((80, 20))
 
-#ic.disable()
-
 
 def play(media, verbose=False, video=True):
-    ic(media)
-    media = Path(media)
+    media = Path(media).absolute()
+    ic(media.as_posix())
     command = ["/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
     if not video:
         command.append("--video=no")
