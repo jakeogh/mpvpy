@@ -11,10 +11,15 @@ ic.configureOutput(includeContext=True)
 ic.lineWrapWidth, _ = get_terminal_size((80, 20))
 
 
-def play(media, verbose=False, video=True):
+def play(media, verbose=False, video=True, subtitles=False):
     media = Path(media).absolute()
     ic(media.as_posix())
     command = ["/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
+    if not subtitles:
+        command.append('--sub=no')
+    else:
+        command.append('--sub=yes')
+
     if not video:
         command.append("--video=no")
     try:
@@ -32,11 +37,12 @@ def play(media, verbose=False, video=True):
 @click.command()
 @click.argument("media", nargs=-1)
 @click.option("--novideo", is_flag=True)
+@click.option("--subtitles", is_flag=True)
 @click.option("--verbose", is_flag=True)
-def cli(media, novideo, verbose):
+def cli(media, novideo, subtitles, verbose):
     video = not novideo
     for m in media:
-        play(media=m, video=video, verbose=verbose)
+        play(media=m, video=video, subtitles=subtitles, verbose=verbose)
 
 
 if __name__ == "__main__":
