@@ -36,7 +36,7 @@ def play(media, verbose=False, video=True, subtitles=False):
 
 @click.command()
 @click.argument("media", nargs=-1)
-@click.option("--novideo", is_flag=True)
+@click.option("--novideo", "--no-video", is_flag=True)
 @click.option("--subtitles", is_flag=True)
 @click.option("--verbose", is_flag=True)
 def cli(media, novideo, subtitles, verbose):
