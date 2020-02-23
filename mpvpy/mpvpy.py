@@ -11,7 +11,7 @@ ic.configureOutput(includeContext=True)
 ic.lineWrapWidth, _ = get_terminal_size((80, 20))
 
 
-def play(media, verbose=False, video=True, subtitles=False):
+def play(media, verbose=False, video=True, subtitles=False, loop=False):
     media = Path(media).absolute()
     ic(media.as_posix())
     command = ["/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
@@ -28,6 +28,9 @@ def play(media, verbose=False, video=True, subtitles=False):
         command.append("--vo=drm")
         command.append("--gpu-context=auto")
 
+    if loop:
+        command.append("--loop-file=inf")
+
     command.append(media)
     if verbose:
         ic(command)
@@ -38,11 +41,12 @@ def play(media, verbose=False, video=True, subtitles=False):
 @click.argument("media", nargs=-1)
 @click.option("--novideo", "--no-video", is_flag=True)
 @click.option("--subtitles", is_flag=True)
+@click.option("--loop", is_flag=True)
 @click.option("--verbose", is_flag=True)
-def cli(media, novideo, subtitles, verbose):
+def cli(media, novideo, subtitles, loop, verbose):
     video = not novideo
     for m in media:
-        play(media=m, video=video, subtitles=subtitles, verbose=verbose)
+        play(media=m, video=video, subtitles=subtitles, loop=loop, verbose=verbose)
 
 
 if __name__ == "__main__":
