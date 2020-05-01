@@ -16,7 +16,7 @@ def play(media, verbose=False, video=True, subtitles=False, loop=False):
     media = Path(media).absolute()
     ic(media.as_posix())
     if os.geteuid() == 0:
-        command = ["schedtool", "-n", "-10", "-e", "/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
+        command = ["schedtool", "-R", "-p", "20", "-n", "-12", "-e", "/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
     else:
         command = ["/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
 
