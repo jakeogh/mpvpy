@@ -14,7 +14,11 @@ ic.lineWrapWidth, _ = get_terminal_size((80, 20))
 def play(media, verbose=False, video=True, subtitles=False, loop=False):
     media = Path(media).absolute()
     ic(media.as_posix())
-    command = ["/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
+    if os.geteuid() == 0:
+        command = ["sudo", "schedtool", "-n", "-10", "-e", "/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
+    else:
+        command = ["/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
+
     if not subtitles:
         command.append('--sub=no')
     else:
