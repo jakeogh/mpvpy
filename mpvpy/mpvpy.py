@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import click
 from shutil import get_terminal_size
 from kcl.commandops import run_command
