@@ -12,7 +12,7 @@ ic.configureOutput(includeContext=True)
 ic.lineWrapWidth, _ = get_terminal_size((80, 20))
 
 
-def play(media, verbose=False, video=True, subtitles=False, loop=False, skip_ahead=False):
+def play(media, verbose=False, video=True, subtitles=False, loop=False, skip_ahead=None):
     media = Path(media).absolute()
     ic(media.as_posix())
     mpv_command = ["/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
@@ -43,6 +43,7 @@ def play(media, verbose=False, video=True, subtitles=False, loop=False, skip_ahe
     command.append(media)
     if verbose:
         ic(command)
+    ic(command)
     run(command)
 
 
