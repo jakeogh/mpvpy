@@ -58,7 +58,7 @@ def cli(media, novideo, subtitles, loop, skip_ahead, verbose):
     if verbose:
         ic(skip_ahead)
     for m in media:
-        if not skip_ahead:
+        if skip_ahead is None:
             if "/youtube/Seth Klein/" in m:
                 skip_ahead = 4
         play(media=m, video=video, subtitles=subtitles, loop=loop, verbose=verbose, skip_ahead=skip_ahead)
