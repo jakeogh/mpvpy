@@ -4,10 +4,12 @@ import os
 import click
 from shutil import get_terminal_size
 from kcl.commandops import run_command
+from kcl.inputops import input_iterator
 from subprocess import CalledProcessError
 from subprocess import run
 from pathlib import Path
 from icecream import ic
+
 ic.configureOutput(includeContext=True)
 ic.lineWrapWidth, _ = get_terminal_size((80, 20))
 
@@ -43,7 +45,7 @@ def play(media, verbose=False, video=True, subtitles=False, loop=False, skip_ahe
     command.append(media)
     if verbose:
         ic(command)
-    #ic(command)
+
     run(command)
 
 
@@ -52,15 +54,19 @@ def play(media, verbose=False, video=True, subtitles=False, loop=False, skip_ahe
 @click.option("--novideo", "--no-video", is_flag=True)
 @click.option("--subtitles", is_flag=True)
 @click.option("--loop", is_flag=True)
+@click.option("--null", is_flag=True)
 @click.option("--skip-ahead", type=int)
 @click.option("--verbose", is_flag=True)
-def cli(media, novideo, subtitles, loop, skip_ahead, verbose):
+def cli(media, novideo, subtitles, loop, null, skip_ahead, verbose):
     video = not novideo
     if verbose:
         ic(skip_ahead)
-    for m in media:
-        play(media=m, video=video, subtitles=subtitles, loop=loop, verbose=verbose, skip_ahead=skip_ahead)
 
+    for m in input_iterator(strings=media, null=null, verbose=verbose):
+        play(media=m,
+             video=video,
+             subtitles=subtitles,
+             loop=loop,
+             verbose=verbose,
+             skip_ahead=skip_ahead)
 
-if __name__ == "__main__":
-    cli()
