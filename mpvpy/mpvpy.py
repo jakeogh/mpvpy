@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import os
-import click
+import mpv
 from shutil import get_terminal_size
 from kcl.commandops import run_command
 from kcl.inputops import input_iterator
@@ -9,6 +9,7 @@ from subprocess import CalledProcessError
 from subprocess import run
 from pathlib import Path
 from icecream import ic
+import click
 
 ic.configureOutput(includeContext=True)
 ic.lineWrapWidth, _ = get_terminal_size((80, 20))
@@ -24,40 +25,45 @@ def play(media, verbose=False, video=True, subtitles=False, loop=False, skip_ahe
         sources_index = media_parts.index('sources')
         chan = media_parts[sources_index + 1:sources_index + 3]
         #ic(chan)
-        shan = '/'.join(chan)
+        chan = '/'.join(chan)
         ic(chan)
         #import IPython; IPython.embed()
 
-    mpv_command = ["/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
-    if skip_ahead:
-        mpv_command = mpv_command + ["--start=+" + str(skip_ahead)]
 
-    if os.geteuid() == 0:
-        command = ["schedtool", "-R", "-p", "20", "-n", "-12", "-e"] + mpv_command
-    else:
-        command = mpv_command
+    player = mpv.MPV(input_default_bindings=True, input_vo_keyboard=True, osc=True)
+    player.play(media.as_posix())
+    player.wait_for_playback()
 
-    if not subtitles:
-        command.append('--sub=no')
-    else:
-        command.append('--sub=yes')
+    #mpv_command = ["/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
+    #if skip_ahead:
+    #    mpv_command = mpv_command + ["--start=+" + str(skip_ahead)]
 
-    if not video:
-        command.append("--video=no")
-    try:
-        run_command("pidof X")
-    except CalledProcessError:
-        command.append("--vo=drm")
-        command.append("--gpu-context=auto")
+    #if os.geteuid() == 0:
+    #    command = ["schedtool", "-R", "-p", "20", "-n", "-12", "-e"] + mpv_command
+    #else:
+    #    command = mpv_command
 
-    if loop:
-        command.append("--loop-file=inf")
+    #if not subtitles:
+    #    command.append('--sub=no')
+    #else:
+    #    command.append('--sub=yes')
 
-    command.append(media)
-    if verbose:
-        ic(command)
+    #if not video:
+    #    command.append("--video=no")
+    #try:
+    #    run_command("pidof X")
+    #except CalledProcessError:
+    #    command.append("--vo=drm")
+    #    command.append("--gpu-context=auto")
 
-    run(command)
+    #if loop:
+    #    command.append("--loop-file=inf")
+
+    #command.append(media)
+    #if verbose:
+    #    ic(command)
+
+    #run(command)
 
 
 @click.command()
