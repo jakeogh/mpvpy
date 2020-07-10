@@ -26,6 +26,7 @@ def play(media, verbose=False, video=True, subtitles=False, loop=False, skip_ahe
         ic(chan)
         shan = '/'.join(chan)
         ic(chan)
+        import IPython; IPython.embed()
 
     mpv_command = ["/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
     if skip_ahead:
