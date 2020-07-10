@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 import mpv
 from shutil import get_terminal_size
 from kcl.commandops import run_command
@@ -69,6 +70,7 @@ def play(media,
     player.terminate()
 
     if QUIT:
+        print("trying to quit")
         sys.exit(1)
 
     #mpv_command = ["/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
