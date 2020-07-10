@@ -15,7 +15,14 @@ ic.configureOutput(includeContext=True)
 ic.lineWrapWidth, _ = get_terminal_size((80, 20))
 
 
-def play(media, verbose=False, video=True, subtitles=False, loop=False, skip_ahead=None):
+def play(media,
+         verbose=False,
+         video=True,
+         subtitles=False,
+         loop=False,
+         skip_ahead=None,
+         fullscreen=False):
+
     media = Path(media).absolute()
     ic(media.as_posix())
 
@@ -32,7 +39,8 @@ def play(media, verbose=False, video=True, subtitles=False, loop=False, skip_ahe
 
     player = mpv.MPV(input_default_bindings=True, input_vo_keyboard=True, osc=True)
 
-    player.fullscreen = True
+    if fullscreen:
+        player.fullscreen = True
 
     if loop:
         player.loop_playlist = 'inf'
@@ -43,6 +51,11 @@ def play(media, verbose=False, video=True, subtitles=False, loop=False, skip_ahe
         #pillow_img = player.screenshot_raw()
         #pillow_img.save('screenshot.png')
 
+    @player.on_key_press('\n')
+    def my_enter_binding():
+        player.playlist_next()
+        #pillow_img = player.screenshot_raw()
+        #pillow_img.save('screenshot.png')
 
     player.play(media.as_posix())
     player.wait_for_playback()
@@ -86,8 +99,9 @@ def play(media, verbose=False, video=True, subtitles=False, loop=False, skip_ahe
 @click.option("--loop", is_flag=True)
 @click.option("--null", is_flag=True)
 @click.option("--skip-ahead", type=int)
+@click.option("--fullscreen", is_flag=True)
 @click.option("--verbose", is_flag=True)
-def cli(media, novideo, subtitles, loop, null, skip_ahead, verbose):
+def cli(media, novideo, subtitles, loop, null, skip_ahead, fullscreen, verbose):
     video = not novideo
     if verbose:
         ic(skip_ahead)
