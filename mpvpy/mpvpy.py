@@ -31,6 +31,19 @@ def play(media, verbose=False, video=True, subtitles=False, loop=False, skip_ahe
 
 
     player = mpv.MPV(input_default_bindings=True, input_vo_keyboard=True, osc=True)
+
+    player.fullscreen = True
+
+    if loop:
+        player.loop_playlist = 'inf'
+
+    @player.on_key_press('B')
+    def my_s_binding():
+        print(chan)
+        #pillow_img = player.screenshot_raw()
+        #pillow_img.save('screenshot.png')
+
+
     player.play(media.as_posix())
     player.wait_for_playback()
 
