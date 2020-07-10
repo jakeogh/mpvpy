@@ -22,6 +22,7 @@ def play(media, verbose=False, video=True, subtitles=False, loop=False, skip_ahe
     if 'sources' in media_parts:
         sources_index = media_parts.index('sources')
         chan = media_parts[sources_index + 1:sources_index + 2]
+        ic(chan)
         shan = '/'.join(chan)
         ic(chan)
 
