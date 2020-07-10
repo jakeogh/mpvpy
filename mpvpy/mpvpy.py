@@ -33,7 +33,7 @@ def play(media,
         chan = media_parts[sources_index + 1:sources_index + 3]
         #ic(chan)
         chan = '/'.join(chan)
-        ic(chan)
+        #ic(chan)
         #import IPython; IPython.embed()
 
 
@@ -57,7 +57,7 @@ def play(media,
 
     @player.on_key_press('ESC')
     def my_esc_binding():
-        player.quit()
+        player.terminate()
         quit(1)
         raise SystemExit
 
