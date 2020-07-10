@@ -51,7 +51,7 @@ def play(media,
         #pillow_img = player.screenshot_raw()
         #pillow_img.save('screenshot.png')
 
-    @player.on_key_press('\n')
+    @player.on_key_press('ENTER')
     def my_enter_binding():
         player.playlist_next()
         #pillow_img = player.screenshot_raw()
