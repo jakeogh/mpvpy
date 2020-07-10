@@ -60,6 +60,7 @@ def play(media,
 
     @player.on_key_press('ESC')
     def my_esc_binding():
+        global QUIT
         QUIT = True
         player.terminate()
         #quit(1)
