@@ -16,6 +16,10 @@ ic.configureOutput(includeContext=True)
 ic.lineWrapWidth, _ = get_terminal_size((80, 20))
 
 QUIT = False
+BAN = False
+
+class BanChanError(ValueError):
+    pass
 
 def play(media,
          verbose=False,
@@ -25,7 +29,8 @@ def play(media,
          skip_ahead=None,
          fullscreen=False):
 
-    global QUIT
+    global QUIT = False
+    global BAN = False
     media = Path(media).absolute()
     ic(media.as_posix())
 
@@ -50,7 +55,10 @@ def play(media,
 
     @player.on_key_press('B')
     def my_s_binding():
-        print(chan)
+        global BAN
+        BAN = True
+        print("banning:", chan)
+        player.terminate()
         #pillow_img = player.screenshot_raw()
         #pillow_img.save('screenshot.png')
 
@@ -71,8 +79,10 @@ def play(media,
     player.terminate()
 
     if QUIT:
-        print("trying to quit")
         sys.exit(1)
+
+    if BAN:
+        raise BanChanError(chan)
 
     #mpv_command = ["/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
     #if skip_ahead:
