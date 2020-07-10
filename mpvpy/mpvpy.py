@@ -58,11 +58,12 @@ def play(media,
     @player.on_key_press('ESC')
     def my_esc_binding():
         player.terminate()
-        quit(1)
-        raise SystemExit
+        #quit(1)
+        #raise SystemExit
 
     player.play(media.as_posix())
     player.wait_for_playback()
+    player.terminate()
 
     #mpv_command = ["/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
     #if skip_ahead:
