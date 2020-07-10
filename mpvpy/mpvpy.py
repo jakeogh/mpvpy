@@ -53,7 +53,7 @@ def play(media,
 
     @player.on_key_press('ENTER')
     def my_enter_binding():
-        player.playlist_next()
+        player.playlist_next(mode='force')
         #pillow_img = player.screenshot_raw()
         #pillow_img.save('screenshot.png')
 
