@@ -60,8 +60,8 @@ def play(media,
 
     @player.on_key_press('ESC')
     def my_esc_binding():
-        player.terminate()
         QUIT = True
+        player.terminate()
         #quit(1)
         #raise SystemExit
 
