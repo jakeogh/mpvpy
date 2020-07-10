@@ -14,6 +14,7 @@ import click
 ic.configureOutput(includeContext=True)
 ic.lineWrapWidth, _ = get_terminal_size((80, 20))
 
+QUIT = False
 
 def play(media,
          verbose=False,
@@ -23,6 +24,7 @@ def play(media,
          skip_ahead=None,
          fullscreen=False):
 
+    global QUIT
     media = Path(media).absolute()
     ic(media.as_posix())
 
@@ -58,12 +60,16 @@ def play(media,
     @player.on_key_press('ESC')
     def my_esc_binding():
         player.terminate()
+        QUIT = True
         #quit(1)
         #raise SystemExit
 
     player.play(media.as_posix())
     player.wait_for_playback()
     player.terminate()
+
+    if QUIT:
+        sys.exit(1)
 
     #mpv_command = ["/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
     #if skip_ahead:
