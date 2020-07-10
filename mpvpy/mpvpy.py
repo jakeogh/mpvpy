@@ -19,14 +19,14 @@ def play(media, verbose=False, video=True, subtitles=False, loop=False, skip_ahe
     ic(media.as_posix())
 
     media_parts = media.parts
-    ic(media_parts)
+    #ic(media_parts)
     if 'sources' in media_parts:
         sources_index = media_parts.index('sources')
-        chan = media_parts[sources_index + 1:sources_index + 2]
-        ic(chan)
+        chan = media_parts[sources_index + 1:sources_index + 3]
+        #ic(chan)
         shan = '/'.join(chan)
         ic(chan)
-        import IPython; IPython.embed()
+        #import IPython; IPython.embed()
 
     mpv_command = ["/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
     if skip_ahead:
