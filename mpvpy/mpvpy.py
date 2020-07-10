@@ -43,9 +43,7 @@ def play(media,
         chan = media_parts[sources_index + 1:sources_index + 3]
         #ic(chan)
         chan = '/'.join(chan)
-        #ic(chan)
         #import IPython; IPython.embed()
-
 
     player = mpv.MPV(input_default_bindings=True, input_vo_keyboard=True, osc=True)
 
@@ -54,6 +52,20 @@ def play(media,
 
     if loop:
         player.loop_playlist = 'inf'
+
+    if skip_ahead:
+        player.start(skip_ahead)
+
+    if not video:
+        player.video(False)
+
+    try:
+        run_command("pidof X")
+    except CalledProcessError:
+        player.vo("drm")
+        player.gpu_context("auto")
+        #command.append("--vo=drm")
+        #command.append("--gpu-context=auto")
 
     @player.on_key_press('B')
     def my_s_binding():
@@ -73,8 +85,6 @@ def play(media,
         global QUIT
         QUIT = True
         player.terminate()
-        #quit(1)
-        #raise SystemExit
 
     player.play(media.as_posix())
     player.wait_for_playback()
