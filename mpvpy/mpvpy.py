@@ -58,7 +58,7 @@ def play(media,
     @player.on_key_press('ESC')
     def my_esc_binding():
         player.quit()
-        mpv.terminate()
+        quit(1)
         raise SystemExit
 
     player.play(media.as_posix())
