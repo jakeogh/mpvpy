@@ -47,6 +47,17 @@ def play(media,
 
     player = mpv.MPV(input_default_bindings=True, input_vo_keyboard=True, osc=True)
 
+    # self.m = mpv.MPV(vo='x11')
+    #vo = 'x11'
+    try:
+        run_command("pidof X")
+    except CalledProcessError:
+        #vo = drm
+        player.vo("drm")
+        player.gpu_context("auto")
+        #command.append("--vo=drm")
+        #command.append("--gpu-context=auto")
+
     if fullscreen:
         player.fullscreen = True
 
@@ -59,13 +70,6 @@ def play(media,
     if not video:
         player.video(False)
 
-    try:
-        run_command("pidof X")
-    except CalledProcessError:
-        player.vo("drm")
-        player.gpu_context("auto")
-        #command.append("--vo=drm")
-        #command.append("--gpu-context=auto")
 
     @player.on_key_press('B')
     def my_s_binding():
