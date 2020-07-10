@@ -19,6 +19,7 @@ def play(media, verbose=False, video=True, subtitles=False, loop=False, skip_ahe
     ic(media.as_posix())
 
     media_parts = media.parts
+    ic(media_parts)
     if 'sources' in media_parts:
         sources_index = media_parts.index('sources')
         chan = media_parts[sources_index + 1:sources_index + 2]
