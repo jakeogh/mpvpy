@@ -29,8 +29,10 @@ def play(media,
          skip_ahead=None,
          fullscreen=False):
 
-    global QUIT = False
-    global BAN = False
+    global QUIT
+    QUIT = False
+    global BAN
+    BAN = False
     media = Path(media).absolute()
     ic(media.as_posix())
 
