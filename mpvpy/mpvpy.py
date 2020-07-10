@@ -17,6 +17,14 @@ ic.lineWrapWidth, _ = get_terminal_size((80, 20))
 def play(media, verbose=False, video=True, subtitles=False, loop=False, skip_ahead=None):
     media = Path(media).absolute()
     ic(media.as_posix())
+
+    media_parts = media.parts
+    if 'sources' in media_parts:
+        sources_index = media_parts.index('sources')
+        chan = media_parts[sources_index + 1:sources_index + 2]
+        shan = '/'.join(chan)
+        ic(chan)
+
     mpv_command = ["/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
     if skip_ahead:
         mpv_command = mpv_command + ["--start=+" + str(skip_ahead)]
