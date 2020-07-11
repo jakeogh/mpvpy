@@ -36,6 +36,9 @@ def play(media,
     media = Path(media).absolute()
     ic(media.as_posix())
 
+    def logger(loglevel, component, message):
+        print('[{}] {}: {}'.format(loglevel, component, message), file=sys.stderr)
+
     media_parts = media.parts
     if 'sources' in media_parts:
         sources_index = media_parts.index('sources')
@@ -47,7 +50,7 @@ def play(media,
     if video:
         video = 'auto'
 
-    player = mpv.MPV(input_default_bindings=True, input_vo_keyboard=True, osc=True, video=video)
+    player = mpv.MPV(log_handler=logger, input_default_bindings=True, input_vo_keyboard=True, osc=True, video=video)
 
     # self.m = mpv.MPV(vo='x11')
     try:
