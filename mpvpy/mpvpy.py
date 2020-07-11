@@ -47,9 +47,9 @@ def play(media,
 
     #ic(video)
     if video:
-        player = mpv.MPV(input_default_bindings=True, input_vo_keyboard=True, osc=True, video=False)
-    else:
         player = mpv.MPV(input_default_bindings=True, input_vo_keyboard=True, osc=True)
+    else:
+        player = mpv.MPV(input_default_bindings=True, input_vo_keyboard=True, osc=True, video=False)
 
     # self.m = mpv.MPV(vo='x11')
     #vo = 'x11'
