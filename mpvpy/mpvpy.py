@@ -45,7 +45,7 @@ def play(media,
         chan = '/'.join(chan)
         #import IPython; IPython.embed()
 
-    player = mpv.MPV(input_default_bindings=True, input_vo_keyboard=True, osc=True)
+    player = mpv.MPV(input_default_bindings=True, input_vo_keyboard=True, osc=True, video=video)
 
     # self.m = mpv.MPV(vo='x11')
     #vo = 'x11'
@@ -66,10 +66,6 @@ def play(media,
 
     if skip_ahead:
         player.start(skip_ahead)
-
-    if not video:
-        player.video(False)
-
 
     @player.on_key_press('B')
     def my_s_binding():
