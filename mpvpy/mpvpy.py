@@ -138,8 +138,8 @@ def play(media,
 @click.option("--subtitles", is_flag=True)
 @click.option("--loop", is_flag=True)
 @click.option("--null", is_flag=True)
-@click.option("--skip-ahead", "--fs", type=int)
-@click.option("--fullscreen", is_flag=True)
+@click.option("--skip-ahead", type=int)
+@click.option("--fullscreen", "--fs", is_flag=True)
 @click.option("--verbose", is_flag=True)
 def cli(media, novideo, subtitles, loop, null, skip_ahead, fullscreen, verbose):
     video = not novideo
