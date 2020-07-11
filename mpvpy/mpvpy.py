@@ -37,7 +37,6 @@ def play(media,
     ic(media.as_posix())
 
     media_parts = media.parts
-    #ic(media_parts)
     if 'sources' in media_parts:
         sources_index = media_parts.index('sources')
         chan = media_parts[sources_index + 1:sources_index + 3]
@@ -45,14 +44,12 @@ def play(media,
         chan = '/'.join(chan)
         #import IPython; IPython.embed()
 
-    #ic(video)
     if video:
-        player = mpv.MPV(input_default_bindings=True, input_vo_keyboard=True, osc=True)
-    else:
-        player = mpv.MPV(input_default_bindings=True, input_vo_keyboard=True, osc=True, video=False)
+        video = 'auto'
+
+    player = mpv.MPV(input_default_bindings=True, input_vo_keyboard=True, osc=True, video=False)
 
     # self.m = mpv.MPV(vo='x11')
-    #vo = 'x11'
     try:
         run_command("pidof X")
     except CalledProcessError:
