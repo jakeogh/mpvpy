@@ -47,7 +47,7 @@ def play(media,
     if video:
         video = 'auto'
 
-    player = mpv.MPV(input_default_bindings=True, input_vo_keyboard=True, osc=True, video=False)
+    player = mpv.MPV(input_default_bindings=True, input_vo_keyboard=True, osc=True, video=video)
 
     # self.m = mpv.MPV(vo='x11')
     try:
