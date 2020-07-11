@@ -45,6 +45,7 @@ def play(media,
         chan = '/'.join(chan)
         #import IPython; IPython.embed()
 
+    ic(video)
     player = mpv.MPV(input_default_bindings=True, input_vo_keyboard=True, osc=True, video=video)
 
     # self.m = mpv.MPV(vo='x11')
