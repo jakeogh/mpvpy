@@ -79,6 +79,7 @@ def play(media,
         media_json_file = media.as_posix().replace("." + media_ext, ".info.json")
         ic(media_json_file)
         url = jsonparser(path=media_json_file, key="webpage_url")
+        ic(url)
         put_clipboard(url)
 
     @player.on_key_press('B')
