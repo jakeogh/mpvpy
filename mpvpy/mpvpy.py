@@ -6,6 +6,8 @@ import mpv
 from shutil import get_terminal_size
 from kcl.commandops import run_command
 from kcl.inputops import input_iterator
+from kcl.clipboardops import put_clipboard
+from jsonparser.jsonparser import jsonparser
 from subprocess import CalledProcessError
 from subprocess import run
 from pathlib import Path
@@ -76,6 +78,8 @@ def play(media,
         media_ext = media.name.split(".")[-1]
         media_json_file = media.as_posix().replace("." + media_ext, ".info.json")
         ic(media_json_file)
+        url = jsonparser(path=media_json_file, key="webpage_url")
+        put_clipboard(url)
 
     @player.on_key_press('B')
     def my_s_binding():
