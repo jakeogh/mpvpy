@@ -71,7 +71,7 @@ def play(media,
     if skip_ahead:
         player.start(skip_ahead)
 
-    @player.on_key_press('CTRL i')
+    @player.on_key_press('Ctrl+i')
     def my_ctrl_i_binding():
         media_ext = media.name.split(".")[-1]
         media_json_file = media.as_posix().replace("." + media_ext, ".info.json")
