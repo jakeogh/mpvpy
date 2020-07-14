@@ -81,7 +81,7 @@ def play(media,
         url = jsonparser(path=media_json_file, key="webpage_url")
         ic(url)
         put_clipboard(url)
-        os.system("/home/user/bin/spider-iri 1")
+        os.system("su user -c \"/home/user/bin/spider-iri 1\"")
 
     @player.on_key_press('B')
     def my_s_binding():
