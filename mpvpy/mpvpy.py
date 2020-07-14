@@ -71,6 +71,12 @@ def play(media,
     if skip_ahead:
         player.start(skip_ahead)
 
+    @player.on_key_press('CTRL i')
+    def my_ctrl_i_binding():
+        media_ext = media.name.split(".")[-1]
+        media_json_file = media.as_posix().replace("." + media_ext, ".info.json")
+        ic(media_json_file)
+
     @player.on_key_press('B')
     def my_s_binding():
         global BAN
