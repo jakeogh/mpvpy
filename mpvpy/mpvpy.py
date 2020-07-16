@@ -58,8 +58,6 @@ def play(media,
                      input_terminal=True,
                      input_vo_keyboard=True,
                      osc=True,
-                     terminal=True,
-                     input_terminal=True,
                      video=video)
 
     # self.m = mpv.MPV(vo='x11')
