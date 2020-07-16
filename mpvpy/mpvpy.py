@@ -54,6 +54,8 @@ def play(media,
 
     player = mpv.MPV(log_handler=logger,
                      input_default_bindings=True,
+                     terminal=True,
+                     input_terminal=True,
                      input_vo_keyboard=True,
                      osc=True,
                      terminal=True,
