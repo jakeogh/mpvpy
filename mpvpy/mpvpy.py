@@ -17,7 +17,7 @@ import click
 ic.configureOutput(includeContext=True)
 ic.lineWrapWidth, _ = get_terminal_size((80, 20))
 
-QUIT = False
+#QUIT = False
 BAN = False
 
 class BanChanError(ValueError):
@@ -31,8 +31,8 @@ def play(media,
          skip_ahead=None,
          fullscreen=False):
 
-    global QUIT
-    QUIT = False
+    #global QUIT
+    #QUIT = False
     global BAN
     BAN = False
     media = Path(media).absolute()
@@ -79,6 +79,10 @@ def play(media,
     if skip_ahead:
         player.start(skip_ahead)
 
+    # https://github.com/jaseg/python-mpv/issues/122
+    player.on_key_press('ESC')(player.quit)
+    player.on_key_press('ENTER')(lambda: player.playlist_next(mode='force'))
+
     @player.on_key_press('Ctrl+i')
     def my_ctrl_i_binding():
         media_ext = media.name.split(".")[-1]
@@ -98,21 +102,20 @@ def play(media,
         #pillow_img = player.screenshot_raw()
         #pillow_img.save('screenshot.png')
 
-    @player.on_key_press('ENTER')
-    def my_enter_binding():
-        player.playlist_next(mode='force')
+    #@player.on_key_press('ENTER')
+    #def my_enter_binding():
+    #    player.playlist_next(mode='force')
 
-    @player.on_key_press('ESC')
-    def my_esc_binding():
-        global QUIT
-        QUIT = True
-        player.terminate()
+    #@player.on_key_press('ESC')
+    #def my_esc_binding():
+    #    global QUIT
+    #    QUIT = True
+    #    player.terminate()
 
     player.play(media.as_posix())
     player.wait_for_playback()
-    player.terminate()
-
-    if QUIT:
+    if player.vo_configured:
+        #player.terminate()
         sys.exit(1)
 
     if BAN:
