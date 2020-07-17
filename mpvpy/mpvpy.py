@@ -115,8 +115,8 @@ def play(media,
 
     player.play(media.as_posix())
     player.wait_for_playback()
-    if player.vo_configured:
-        #player.terminate()
+    if player.vo_configured:  # True when window is closed https://github.com/jaseg/python-mpv/issues/122
+        player.terminate()
         sys.exit(1)
 
     if BAN:
