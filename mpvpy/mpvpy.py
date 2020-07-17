@@ -81,7 +81,7 @@ def play(media,
 
     # https://github.com/jaseg/python-mpv/issues/122
     player.on_key_press('ESC')(player.quit)
-    player.on_key_press('ENTER')(lambda: player.playlist_next(mode='force'))
+    #player.on_key_press('ENTER')(lambda: player.playlist_next(mode='force'))
 
     @player.on_key_press('Ctrl+i')
     def my_ctrl_i_binding():
@@ -102,9 +102,9 @@ def play(media,
         #pillow_img = player.screenshot_raw()
         #pillow_img.save('screenshot.png')
 
-    #@player.on_key_press('ENTER')
-    #def my_enter_binding():
-    #    player.playlist_next(mode='force')
+    @player.on_key_press('ENTER')
+    def my_enter_binding():
+        player.playlist_next(mode='force')
 
     #@player.on_key_press('ESC')
     #def my_esc_binding():
