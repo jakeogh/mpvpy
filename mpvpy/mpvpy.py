@@ -108,17 +108,21 @@ def play(media,
 
     @player.on_key_press('ESC')
     def my_esc_binding():
-        player.quit()
-    #    global QUIT
-    #    QUIT = True
-    #    player.terminate()
+        #player.quit()
+        global QUIT
+        QUIT = True
+        player.terminate()
 
     player.play(media.as_posix())
     player.wait_for_playback()
     player.terminate()
 
-    if player.vo_configured:  # True when window is closed https://github.com/jaseg/python-mpv/issues/122
-        print("sys.exit(0)", file=sys.stderr)
+    #if player.vo_configured:  # True when window is closed https://github.com/jaseg/python-mpv/issues/122
+    #    print("sys.exit(0)", file=sys.stderr)
+    #    sys.exit(0)
+
+    if QUIT:
+        player.terminate()
         sys.exit(0)
 
     if BAN:
