@@ -80,7 +80,7 @@ def play(media,
         player.start(skip_ahead)
 
     # https://github.com/jaseg/python-mpv/issues/122
-    player.on_key_press('ESC')(player.quit)
+    #player.on_key_press('ESC')(player.quit)
     #player.on_key_press('ENTER')(lambda: player.playlist_next(mode='force'))
 
     @player.on_key_press('Ctrl+i')
@@ -106,8 +106,9 @@ def play(media,
     def my_enter_binding():
         player.playlist_next(mode='force')
 
-    #@player.on_key_press('ESC')
-    #def my_esc_binding():
+    @player.on_key_press('ESC')
+    def my_esc_binding():
+        player.quit
     #    global QUIT
     #    QUIT = True
     #    player.terminate()
