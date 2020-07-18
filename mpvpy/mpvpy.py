@@ -29,7 +29,6 @@ def logger(loglevel, component, message):
 
 
 def play(media,
-         player,
          verbose=False,
          video=True,
          subtitles=False,
@@ -56,6 +55,13 @@ def play(media,
     if video:
         video = 'auto'
 
+    player = mpv.MPV(log_handler=logger,
+                     input_default_bindings=True,
+                     terminal=True,
+                     input_terminal=True,
+                     input_vo_keyboard=True,
+                     osc=True,
+                     video=video)
 
     # self.m = mpv.MPV(vo='x11')
     try:
@@ -112,11 +118,15 @@ def play(media,
     #    QUIT = True
     #    player.terminate()
 
-    player.play(media.as_posix())
-    # https://github.com/jaseg/python-mpv/issues/79
-    #player.wait_for_property('seekable')
-    #player.seek(seek, reference='absolute', precision='exact')
-    player.wait_for_playback()
+    try:
+        player.play(media.as_posix())
+        # https://github.com/jaseg/python-mpv/issues/79
+        #player.wait_for_property('seekable')
+        #player.seek(seek, reference='absolute', precision='exact')
+        player.wait_for_playback()
+    except mpv.ShutdownError:
+        pass
+
     player.terminate()
 
     #if player.vo_configured:  # True when window is closed https://github.com/jaseg/python-mpv/issues/122
@@ -176,25 +186,13 @@ def cli(media, novideo, subtitles, loop, null, skip_ahead, fullscreen, verbose):
     if verbose:
         ic(skip_ahead)
 
-    player = mpv.MPV(log_handler=logger,
-                     input_default_bindings=True,
-                     terminal=True,
-                     input_terminal=True,
-                     input_vo_keyboard=True,
-                     osc=True,
-                     video=video)
 
     for m in input_iterator(strings=media, null=null, verbose=verbose):
-        try:
-            play(media=m,
-                 player=player,
-                 video=video,
-                 subtitles=subtitles,
-                 loop=loop,
-                 verbose=verbose,
-                 skip_ahead=skip_ahead)
-        except mpv.ShutdownError:
-            pass
+        play(media=m,
+             video=video,
+             subtitles=subtitles,
+             loop=loop,
+             verbose=verbose,
+             skip_ahead=skip_ahead)
 
-    player.terminate()
 
