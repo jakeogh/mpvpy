@@ -23,7 +23,13 @@ BAN = False
 class BanChanError(ValueError):
     pass
 
+
+def logger(loglevel, component, message):
+    print('[{}] {}: {}'.format(loglevel, component, message), file=sys.stderr)
+
+
 def play(media,
+         player,
          verbose=False,
          video=True,
          subtitles=False,
@@ -38,8 +44,6 @@ def play(media,
     media = Path(media).absolute()
     ic(media.as_posix())
 
-    def logger(loglevel, component, message):
-        print('[{}] {}: {}'.format(loglevel, component, message), file=sys.stderr)
 
     media_parts = media.parts
     if 'sources' in media_parts:
@@ -52,13 +56,6 @@ def play(media,
     if video:
         video = 'auto'
 
-    player = mpv.MPV(log_handler=logger,
-                     input_default_bindings=True,
-                     terminal=True,
-                     input_terminal=True,
-                     input_vo_keyboard=True,
-                     osc=True,
-                     video=video)
 
     # self.m = mpv.MPV(vo='x11')
     try:
@@ -102,18 +99,23 @@ def play(media,
         #pillow_img = player.screenshot_raw()
         #pillow_img.save('screenshot.png')
 
-    @player.on_key_press('ENTER')
-    def my_enter_binding():
-        player.playlist_next(mode='force')
+    player.on_key_press('ENTER')(lambda: player.playlist_next(mode='force'))
 
-    @player.on_key_press('ESC')
-    def my_esc_binding():
-        #player.quit()
-        global QUIT
-        QUIT = True
-        player.terminate()
+    # ESC must be pressed 2x if the focus is on the terminal due to mpv design:
+    # https://github.com/jaseg/python-mpv/issues/122
+    player.on_key_press('ESC')(player.quit)
+
+    #@player.on_key_press('ESC')
+    #def my_esc_binding():
+    #    #player.quit()
+    #    global QUIT
+    #    QUIT = True
+    #    player.terminate()
 
     player.play(media.as_posix())
+    # https://github.com/jaseg/python-mpv/issues/79
+    #player.wait_for_property('seekable')
+    #player.seek(seek, reference='absolute', precision='exact')
     player.wait_for_playback()
     player.terminate()
 
@@ -121,9 +123,9 @@ def play(media,
     #    print("sys.exit(0)", file=sys.stderr)
     #    sys.exit(0)
 
-    if QUIT:
-        player.terminate()
-        sys.exit(0)
+    #if QUIT:
+    #    player.terminate()
+    #    sys.exit(0)
 
     if BAN:
         raise BanChanError(chan)
@@ -174,11 +176,25 @@ def cli(media, novideo, subtitles, loop, null, skip_ahead, fullscreen, verbose):
     if verbose:
         ic(skip_ahead)
 
+    player = mpv.MPV(log_handler=logger,
+                     input_default_bindings=True,
+                     terminal=True,
+                     input_terminal=True,
+                     input_vo_keyboard=True,
+                     osc=True,
+                     video=video)
+
     for m in input_iterator(strings=media, null=null, verbose=verbose):
-        play(media=m,
-             video=video,
-             subtitles=subtitles,
-             loop=loop,
-             verbose=verbose,
-             skip_ahead=skip_ahead)
+        try:
+            play(media=m,
+                 player=player,
+                 video=video,
+                 subtitles=subtitles,
+                 loop=loop,
+                 verbose=verbose,
+                 skip_ahead=skip_ahead)
+        except mpv.ShutdownError:
+            pass
+
+    player.terminate()
 
