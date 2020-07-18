@@ -7,6 +7,7 @@ from shutil import get_terminal_size
 from kcl.commandops import run_command
 from kcl.inputops import input_iterator
 from kcl.clipboardops import put_clipboard
+from kcl.printops import eprint
 from jsonparser.jsonparser import jsonparser
 from subprocess import CalledProcessError
 from subprocess import run
@@ -127,6 +128,7 @@ def play(media,
         #player.seek(seek, reference='absolute', precision='exact')
         player.wait_for_playback()
     except mpv.ShutdownError:
+        eprint("\nmpv.ShutdownError\n")
         player.terminate()
         raise StopPlayingError
         #pass
