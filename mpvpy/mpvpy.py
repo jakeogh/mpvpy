@@ -127,6 +127,7 @@ def play(media,
         #player.seek(seek, reference='absolute', precision='exact')
         player.wait_for_playback()
     except mpv.ShutdownError:
+        player.terminate()
         raise StopPlayingError
         #pass
 
