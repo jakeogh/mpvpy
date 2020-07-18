@@ -23,6 +23,8 @@ BAN = False
 class BanChanError(ValueError):
     pass
 
+class StopPlayingError(ValueError):
+    pass
 
 def logger(loglevel, component, message):
     print('[{}] {}: {}'.format(loglevel, component, message), file=sys.stderr)
@@ -125,7 +127,8 @@ def play(media,
         #player.seek(seek, reference='absolute', precision='exact')
         player.wait_for_playback()
     except mpv.ShutdownError:
-        pass
+        raise StopPlayingError
+        #pass
 
     player.terminate()
 
