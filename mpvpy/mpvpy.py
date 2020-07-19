@@ -46,7 +46,6 @@ def play(media,
     media = Path(media).absolute()
     ic(media.as_posix())
 
-
     media_parts = media.parts
     if 'sources' in media_parts:
         sources_index = media_parts.index('sources')
@@ -130,6 +129,9 @@ def play(media,
     except mpv.ShutdownError:
         eprint("\nmpv.ShutdownError\n")
         player.terminate()
+        if BAN:
+            raise BanChanError(chan)
+            continue
         raise StopPlayingError
         #pass
 
@@ -143,8 +145,6 @@ def play(media,
     #    player.terminate()
     #    sys.exit(0)
 
-    if BAN:
-        raise BanChanError(chan)
 
     #mpv_command = ["/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
     #if skip_ahead:
