@@ -64,8 +64,9 @@ def play(media,
                      input_vo_keyboard=True,
                      #script_opts='osc-layout=bottombar,osc-seekbarstyle=bar,osc-deadzonesize=0,osc-minmousemove=3',
                      #script_opts='osc-layout=bottombar',
+                     osd_bar=False,
                      scripts='/home/user/.config/mpv/osc_seek.lua',
-                     osc=True,
+                     #osc=True,
                      video=video)
 
     # self.m = mpv.MPV(vo='x11')
