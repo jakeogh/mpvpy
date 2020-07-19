@@ -62,6 +62,8 @@ def play(media,
                      terminal=True,
                      input_terminal=True,
                      input_vo_keyboard=True,
+                     #script_opts='osc-layout=bottombar,osc-seekbarstyle=bar,osc-deadzonesize=0,osc-minmousemove=3',
+                     script_opts='osc-layout=bottombar',
                      osc=True,
                      video=video)
 
