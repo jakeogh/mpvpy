@@ -131,7 +131,7 @@ def play(media,
         player.terminate()
         if BAN:
             raise BanChanError(chan)
-            continue
+            return
         raise StopPlayingError
         #pass
 
