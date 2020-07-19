@@ -63,7 +63,8 @@ def play(media,
                      input_terminal=True,
                      input_vo_keyboard=True,
                      #script_opts='osc-layout=bottombar,osc-seekbarstyle=bar,osc-deadzonesize=0,osc-minmousemove=3',
-                     script_opts='osc-layout=bottombar',
+                     #script_opts='osc-layout=bottombar',
+                     scripts='/home/user/.config/mpv/osc_seek.lua',
                      osc=True,
                      video=video)
 
