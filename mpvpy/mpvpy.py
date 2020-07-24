@@ -85,8 +85,8 @@ def play(media,
     if loop:
         player.loop_playlist = 'inf'
 
-    if skip_ahead:
-        player.start(skip_ahead)
+    #if skip_ahead:
+    #    player.start(skip_ahead)
 
     # https://github.com/jaseg/python-mpv/issues/122
     #player.on_key_press('ESC')(player.quit)
@@ -127,8 +127,9 @@ def play(media,
     try:
         player.play(media.as_posix())
         # https://github.com/jaseg/python-mpv/issues/79
-        #player.wait_for_property('seekable')
-        #player.seek(seek, reference='absolute', precision='exact')
+        if skip_ahead:
+            player.wait_for_property('seekable')
+            player.seek(skip_ahead, reference='absolute', precision='exact')
         player.wait_for_playback()
     except mpv.ShutdownError:
         eprint("\nmpv.ShutdownError\n")
