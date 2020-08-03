@@ -102,8 +102,8 @@ def play(media,
         try:
             url = jsonparser(path=media_json_file, key="webpage_url")
             ic(url)
-        except UnicodeDecodeError as e:
-            ic(e)
+        except UnicodeDecodeError:
+            #ic(e)  # nope, will print the binary that was not json
             url = None
 
         if url:
