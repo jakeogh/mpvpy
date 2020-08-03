@@ -45,6 +45,7 @@ def play(media,
     BAN = False
     media = Path(media).absolute()
     ic(media.as_posix())
+    eprint(media.as_posix())
 
     media_parts = media.parts
     if 'sources' in media_parts:
