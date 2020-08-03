@@ -96,12 +96,16 @@ def play(media,
     @player.on_key_press('Ctrl+i')
     def my_ctrl_i_binding():
         media_ext = media.name.split(".")[-1]
-        media_json_file = media.as_posix().replace("." + media_ext, ".info.json")
-        ic(media_json_file)
-        url = jsonparser(path=media_json_file, key="webpage_url")
-        ic(url)
-        put_clipboard(url)
-        os.system("su user -c \"/home/user/bin/spider-iri 1\"")
+        if media_ext:
+            media_json_file = media.as_posix().replace("." + media_ext, ".info.json")
+            ic(media_json_file)
+            url = jsonparser(path=media_json_file, key="webpage_url")
+            ic(url)
+            put_clipboard(url)
+            os.system("su user -c \"/home/user/bin/spider-iri 1\"")
+        else:
+            os.system("su user -c \"/usr/bin/iridb import {}\"".format(media.as_posix()))
+
 
     @player.on_key_press('B')
     def my_s_binding():
