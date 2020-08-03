@@ -110,7 +110,11 @@ def play(media,
             put_clipboard(url)
             os.system("su user -c \"/home/user/bin/spider-iri 1\"")
         else:
-            os.system("su user -c \"/usr/bin/iridb import {}\"".format(media.as_posix()))
+            if os.getuid() == 0:
+                os.system("su user -c \"/usr/bin/iridb import {}\"".format(media.as_posix()))
+            else:
+                os.system("/usr/bin/iridb import {}".format(media.as_posix()))
+
 
 
     @player.on_key_press('B')
