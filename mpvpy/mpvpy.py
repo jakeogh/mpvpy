@@ -118,8 +118,6 @@ def play(media,
             else:
                 os.system("/usr/bin/iridb import {}".format(media.as_posix()))
 
-
-
     @player.on_key_press('B')
     def my_s_binding():
         global BAN
@@ -134,6 +132,7 @@ def play(media,
     # ESC must be pressed 2x if the focus is on the terminal due to mpv design:
     # https://github.com/jaseg/python-mpv/issues/122
     player.on_key_press('ESC')(player.quit)
+    player.register_key_binding('INS', 'seek 5')
 
     #@player.on_key_press('ESC')
     #def my_esc_binding():
