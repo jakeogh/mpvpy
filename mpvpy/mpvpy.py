@@ -75,8 +75,8 @@ def play(media,
     #ic(get_current_virtural_terminal())
 
     if not in_xorg():
-        player.vo("drm")
-        player.gpu_context("auto")
+        player.vo = "drm"
+        player.gpu_context = "auto"
 
     if fullscreen:
         player.fullscreen = True
