@@ -8,6 +8,7 @@ from kcl.commandops import run_command
 from kcl.inputops import input_iterator
 from kcl.clipboardops import put_clipboard
 from kcl.printops import eprint
+from kcl.terminalops import in_xorg
 from jsonparser.jsonparser import jsonparser
 from subprocess import CalledProcessError
 from subprocess import run
@@ -71,14 +72,11 @@ def play(media,
                      video=video)
 
     # self.m = mpv.MPV(vo='x11')
-    try:
-        run_command("pidof X")
-    except CalledProcessError:
-        #vo = drm
+    #ic(get_current_virtural_terminal())
+
+    if not in_xorg():
         player.vo("drm")
         player.gpu_context("auto")
-        #command.append("--vo=drm")
-        #command.append("--gpu-context=auto")
 
     if fullscreen:
         player.fullscreen = True
