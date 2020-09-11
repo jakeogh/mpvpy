@@ -84,6 +84,11 @@ def play(media,
     if loop:
         player.loop_playlist = 'inf'
 
+    if subtitles:
+        player.sub = "yes"
+    else:
+        player.sub = "no"
+
     #if skip_ahead:
     #    player.start(skip_ahead)
 
@@ -175,10 +180,6 @@ def play(media,
     #else:
     #    command = mpv_command
 
-    #if not subtitles:
-    #    command.append('--sub=no')
-    #else:
-    #    command.append('--sub=yes')
 
     #if not video:
     #    command.append("--video=no")
