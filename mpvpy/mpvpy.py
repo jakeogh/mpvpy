@@ -213,6 +213,7 @@ def cli(media, novideo, subtitles, loop, printn, skip_ahead, not_fullscreen, ver
     null = not printn
     fullscreen = not not_fullscreen
     if verbose:
+        #ic(fullscreen)
         ic(skip_ahead)
 
     for m in input_iterator(strings=media, null=null, verbose=verbose):
@@ -221,6 +222,7 @@ def cli(media, novideo, subtitles, loop, printn, skip_ahead, not_fullscreen, ver
              subtitles=subtitles,
              loop=loop,
              verbose=verbose,
+             fullscreen=fullscreen,
              skip_ahead=skip_ahead)
 
 
