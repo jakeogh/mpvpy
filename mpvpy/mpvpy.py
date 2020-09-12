@@ -206,14 +206,14 @@ def play(media,
 @click.option("--loop", is_flag=True)
 @click.option("--printn", is_flag=True)
 @click.option("--skip-ahead", type=int)
-@click.option("--fullscreen", "--fs", is_flag=True)
+@click.option("--not-fullscreen", "--not-fs", is_flag=True)
 @click.option("--verbose", is_flag=True)
 def cli(media, novideo, subtitles, loop, printn, skip_ahead, fullscreen, verbose):
     video = not novideo
     null = not printn
+    fullscreen = not not_fullscreen
     if verbose:
         ic(skip_ahead)
-
 
     for m in input_iterator(strings=media, null=null, verbose=verbose):
         play(media=m,
