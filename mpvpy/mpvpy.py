@@ -112,9 +112,9 @@ def play(media,
         if url:
             put_clipboard(url)
             if os.getuid() == 0:
-                os.system("su user -c \"/home/user/bin/spider-iri 1\"")
+                os.system("su user -c \"/home/user/bin/spider-iri 1\" &")
             else:
-                os.system("/home/user/bin/spider-iri 1")
+                os.system("/home/user/bin/spider-iri 1 &")
         else:
             if os.getuid() == 0:
                 os.system("su user -c \"/usr/bin/iridb import {}\"".format(media.as_posix()))
