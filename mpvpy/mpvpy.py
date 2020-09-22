@@ -1,10 +1,27 @@
 #!/usr/bin/env python3
 
+# pylint: disable=C0111    # docstrings are always outdated and wrong
+# pylint: disable=W0511    # todo is encouraged
+# pylint: disable=C0301    # line too long
+# pylint: disable=R0902    # too many instance attributes
+# pylint: disable=C0302    # too many lines in module
+# pylint: disable=C0103    # single letter var names, func name too descriptive
+# pylint: disable=R0911    # too many return statements
+# pylint: disable=R0912    # too many branches
+# pylint: disable=R0915    # too many statements
+# pylint: disable=R0913    # too many arguments
+# pylint: disable=R1702    # too many nested blocks
+# pylint: disable=R0914    # too many local variables
+# pylint: disable=R0903    # too few public methods
+# pylint: disable=E1101    # no member for base
+# pylint: disable=W0201    # attribute defined outside __init__
+
+
 import os
 import sys
-import mpv
 from shutil import get_terminal_size
-from kcl.commandops import run_command
+import mpv
+#from kcl.commandops import run_command
 from kcl.inputops import input_iterator
 from kcl.clipboardops import put_clipboard
 from kcl.printops import eprint
@@ -17,7 +34,7 @@ from icecream import ic
 import click
 
 ic.configureOutput(includeContext=True)
-ic.lineWrapWidth, _ = get_terminal_size((80, 20))
+#ic.lineWrapWidth, _ = get_terminal_size((80, 20))
 
 #QUIT = False
 BAN = False
@@ -205,10 +222,11 @@ def play(media,
 @click.option("--subtitles", is_flag=True)
 @click.option("--loop", is_flag=True)
 @click.option("--printn", is_flag=True)
+@click.option("--random", is_flag=True)
 @click.option("--skip-ahead", type=int)
 @click.option("--not-fullscreen", "--not-fs", is_flag=True)
 @click.option("--verbose", is_flag=True)
-def cli(media, novideo, subtitles, loop, printn, skip_ahead, not_fullscreen, verbose):
+def cli(media, novideo, subtitles, loop, printn, random, skip_ahead, not_fullscreen, verbose):
     video = not novideo
     null = not printn
     fullscreen = not not_fullscreen
@@ -216,7 +234,10 @@ def cli(media, novideo, subtitles, loop, printn, skip_ahead, not_fullscreen, ver
         #ic(fullscreen)
         ic(skip_ahead)
 
-    for m in input_iterator(strings=media, null=null, verbose=verbose):
+    for m in input_iterator(strings=media,
+                            random=random,
+                            null=null,
+                            verbose=verbose):
         play(media=m,
              video=video,
              subtitles=subtitles,
