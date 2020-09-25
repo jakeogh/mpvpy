@@ -26,9 +26,11 @@ from kcl.inputops import input_iterator
 from kcl.clipboardops import put_clipboard
 from kcl.printops import eprint
 from kcl.terminalops import in_xorg
+from kcl.hashops import sha3_256_hash_file
 from jsonparser.jsonparser import jsonparser
 from subprocess import CalledProcessError
 from subprocess import run
+from hashfilter.hashfilter import hashfilter
 from pathlib import Path
 from icecream import ic
 import click
@@ -64,6 +66,13 @@ def play(media,
     media = Path(media).absolute()
     ic(media.as_posix())
     eprint(media.as_posix())
+
+    ic('calculating sha3-256')
+    file_hash_before = sha3_256_hash_file(media)
+    ic(file_hash_before)
+    if hashfilter(file_hash_before, None, verbose=verbose):
+        ic('banned:', file_hash_before)
+        return
 
     media_parts = media.parts
     if 'sources' in media_parts:
