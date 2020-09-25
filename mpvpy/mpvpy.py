@@ -68,10 +68,10 @@ def play(media,
     eprint(media.as_posix())
 
     ic('calculating sha3-256')
-    file_hash_before = sha3_256_hash_file(media)
-    ic(file_hash_before)
-    if hashfilter(file_hash_before, None, verbose=verbose):
-        ic('banned:', file_hash_before)
+    file_hash = sha3_256_hash_file(media)
+    ic(file_hash)
+    if hashfilter(file_hash, None, verbose=verbose):
+        ic('banned:', file_hash)
         return
 
     media_parts = media.parts
