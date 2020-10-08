@@ -20,6 +20,7 @@
 import os
 import sys
 from shutil import get_terminal_size
+from pathlib import Path
 import mpv
 #from kcl.commandops import run_command
 from kcl.inputops import input_iterator
@@ -31,7 +32,6 @@ from jsonparser.jsonparser import jsonparser
 from subprocess import CalledProcessError
 from subprocess import run
 from hashfilter.hashfilter import hashfilter
-from pathlib import Path
 from icecream import ic
 import click
 
@@ -67,12 +67,13 @@ def play(media,
     ic(media.as_posix())
     eprint(media.as_posix())
 
-    ic('calculating sha3-256')
-    file_hash = sha3_256_hash_file(media)
-    ic(file_hash)
-    if hashfilter(file_hash, None, verbose=verbose):
-        ic('banned:', file_hash)
-        return
+    if "/youtube-dl_cache/sources/" not in media.as_posix():
+        ic('calculating sha3-256')
+        file_hash = sha3_256_hash_file(media)
+        ic(file_hash)
+        if hashfilter(file_hash, None, verbose=verbose):
+            ic('banned:', file_hash)
+            return
 
     media_parts = media.parts
     if 'sources' in media_parts:
