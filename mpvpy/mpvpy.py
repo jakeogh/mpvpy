@@ -67,7 +67,7 @@ def play(media,
     ic(media.as_posix())
     eprint(media.as_posix())
 
-    if "/youtube-dl_cache/sources/" not in media.as_posix():
+    if "/sha3_256/" in media.as_posix():
         ic('calculating sha3-256')
         file_hash = sha3_256_hash_file(media)
         ic(file_hash)
