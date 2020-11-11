@@ -23,7 +23,7 @@ from shutil import get_terminal_size
 from pathlib import Path
 import mpv
 #from kcl.commandops import run_command
-from kcl.inputops import input_iterator
+from kcl.iterops import input_iterator
 from kcl.clipboardops import put_clipboard
 from kcl.printops import eprint
 from kcl.terminalops import in_xorg
