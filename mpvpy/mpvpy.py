@@ -19,26 +19,20 @@
 
 import os
 import sys
-from shutil import get_terminal_size
 from pathlib import Path
 import mpv
-#from kcl.commandops import run_command
 from kcl.iterops import input_iterator
 from kcl.clipboardops import put_clipboard
 from kcl.printops import eprint
 from kcl.terminalops import in_xorg
 from kcl.hashops import sha3_256_hash_file
 from jsonparser.jsonparser import jsonparser
-from subprocess import CalledProcessError
-from subprocess import run
 from hashfilter.hashfilter import hashfilter
 from icecream import ic
 import click
 
 ic.configureOutput(includeContext=True)
-#ic.lineWrapWidth, _ = get_terminal_size((80, 20))
 
-#QUIT = False
 BAN = False
 
 class BanChanError(ValueError):
@@ -153,7 +147,8 @@ def play(media,
         global BAN
         BAN = True
         print("banning:", chan)
-        player.terminate()
+        #player.terminate()
+        player.quit()
         #pillow_img = player.screenshot_raw()
         #pillow_img.save('screenshot.png')
 
