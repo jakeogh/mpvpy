@@ -49,14 +49,15 @@ def logger(loglevel, component, message):
     print('[{}] {}: {}'.format(loglevel, component, message), file=sys.stderr)
 
 
-def play(media,
+def play(*,
+         media,
          verbose=False,
          video=True,
          subtitles=False,
          loop=False,
          skip_ahead=None,
          ban_clipboard=False,
-         fullscreen=False):
+         fullscreen=False,):
 
     global QUIT
     QUIT = False
