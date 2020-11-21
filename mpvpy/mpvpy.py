@@ -26,7 +26,7 @@ import mpv
 from hashfilter.hashfilter import hashfilter
 from icecream import ic
 from jsonparser.jsonparser import jsonparser
-from kcl.clipboardops import put_clipboard
+from kcl.clipboardops import get_clipboard, put_clipboard
 from kcl.hashops import sha3_256_hash_file
 from kcl.iterops import input_iterator
 from kcl.printops import eprint
@@ -37,6 +37,9 @@ ic.configureOutput(includeContext=True)
 BAN = False
 
 class BanChanError(ValueError):
+    pass
+
+class BanClipboardError(ValueError):
     pass
 
 class StopPlayingError(ValueError):
@@ -52,6 +55,7 @@ def play(media,
          subtitles=False,
          loop=False,
          skip_ahead=None,
+         ban_clipboard=False,
          fullscreen=False):
 
     global QUIT
@@ -60,7 +64,7 @@ def play(media,
     BAN = False
     media = Path(media).absolute()
     ic(media.as_posix())
-    eprint(media.as_posix())
+    #eprint(media.as_posix())
 
     if "/sha3_256/" in media.as_posix():
         ic('calculating sha3-256')
@@ -178,8 +182,13 @@ def play(media,
         eprint("\nmpv.ShutdownError\n")
         player.terminate()
         if BAN:
-            ic('raising BanChanError:', chan)
-            raise BanChanError(chan)
+            if ban_clipboard:
+                clipboard = get_clipboard(one_line=True)
+                ic('raising BanClipboardError:', clipboard)
+                raise BanClipboardError(clipboard)
+            else:
+                ic('raising BanChanError:', chan)
+                raise BanChanError(chan)
         raise StopPlayingError
         #pass
 
