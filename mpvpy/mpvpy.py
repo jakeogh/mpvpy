@@ -20,16 +20,17 @@
 import os
 import sys
 from pathlib import Path
+
+import click
 import mpv
-from kcl.iterops import input_iterator
-from kcl.clipboardops import put_clipboard
-from kcl.printops import eprint
-from kcl.terminalops import in_xorg
-from kcl.hashops import sha3_256_hash_file
-from jsonparser.jsonparser import jsonparser
 from hashfilter.hashfilter import hashfilter
 from icecream import ic
-import click
+from jsonparser.jsonparser import jsonparser
+from kcl.clipboardops import put_clipboard
+from kcl.hashops import sha3_256_hash_file
+from kcl.iterops import input_iterator
+from kcl.printops import eprint
+from kcl.terminalops import in_xorg
 
 ic.configureOutput(includeContext=True)
 
@@ -66,7 +67,7 @@ def play(media,
         file_hash = sha3_256_hash_file(media)
         ic(file_hash)
         if hashfilter(file_hash, None, verbose=verbose):
-            ic('banned:', file_hash)
+            ic('banned hash:', file_hash)
             return
 
     media_parts = media.parts
@@ -146,7 +147,7 @@ def play(media,
     def my_s_binding():
         global BAN
         BAN = True
-        print("banning:", chan)
+        ic('banning:', chan)
         #player.terminate()
         player.quit()
         #pillow_img = player.screenshot_raw()
@@ -177,8 +178,8 @@ def play(media,
         eprint("\nmpv.ShutdownError\n")
         player.terminate()
         if BAN:
+            ic('raising BanChanError:', chan)
             raise BanChanError(chan)
-            return
         raise StopPlayingError
         #pass
 
@@ -192,7 +193,6 @@ def play(media,
     #    player.terminate()
     #    sys.exit(0)
 
-
     #mpv_command = ["/usr/bin/mpv", "--no-audio-display", "--audio-display=no", "--image-display-duration=2", "--osd-on-seek=msg"]
     #if skip_ahead:
     #    mpv_command = mpv_command + ["--start=+" + str(skip_ahead)]
@@ -201,7 +201,6 @@ def play(media,
     #    command = ["schedtool", "-R", "-p", "20", "-n", "-12", "-e"] + mpv_command
     #else:
     #    command = mpv_command
-
 
     #if not video:
     #    command.append("--video=no")
@@ -250,5 +249,4 @@ def cli(media, novideo, subtitles, loop, printn, random, skip_ahead, not_fullscr
              verbose=verbose,
              fullscreen=fullscreen,
              skip_ahead=skip_ahead)
-
 
