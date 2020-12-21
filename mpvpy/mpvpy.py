@@ -23,7 +23,7 @@ from pathlib import Path
 
 import click
 import mpv
-from hashfilter.hashfilter import hashfilter
+from hashfilter.hashfilter import BannedHashError, hashfilter
 from icecream import ic
 from jsonparser.jsonparser import jsonparser
 from kcl.clipboardops import get_clipboard, put_clipboard
@@ -71,7 +71,10 @@ def play(*,
         ic('calculating sha3-256')
         file_hash = sha3_256_hash_file(media)
         ic(file_hash)
-        if hashfilter(file_hash, None, verbose=verbose):
+        try:
+            hashfilter(file_hash, None, verbose=verbose):
+        except BannedHashError as e:
+            ic(e)
             ic('banned hash:', file_hash)
             return
 
