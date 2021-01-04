@@ -247,7 +247,17 @@ def play(*,
 @click.option("--skip-ahead", type=int)
 @click.option("--not-fullscreen", "--not-fs", is_flag=True)
 @click.option("--verbose", is_flag=True)
-def cli(media, novideo, subtitles, loop, printn, random, skip_ahead, not_fullscreen, verbose):
+@click.option("--debug", is_flag=True)
+def cli(media,
+        novideo,
+        subtitles,
+        loop,
+        printn,
+        random,
+        skip_ahead,
+        not_fullscreen,
+        verbose: bool,
+        debug: bool,):
     video = not novideo
     null = not printn
     fullscreen = not not_fullscreen
