@@ -51,13 +51,14 @@ def logger(loglevel, component, message):
 
 def play(*,
          media,
-         verbose=False,
-         video=True,
-         subtitles=False,
-         loop=False,
-         skip_ahead=None,
-         ban_clipboard=False,
-         fullscreen=False,):
+         verbose: bool = False,
+         debug: bool = False,
+         video: bool = True,
+         subtitles: bool = False,
+         loop: bool = False,
+         skip_ahead: float = None,
+         ban_clipboard: bool = False,
+         fullscreen: bool = False,):
 
     global QUIT
     QUIT = False
@@ -263,6 +264,7 @@ def cli(media, novideo, subtitles, loop, printn, random, skip_ahead, not_fullscr
              subtitles=subtitles,
              loop=loop,
              verbose=verbose,
+             debug=debug,
              fullscreen=fullscreen,
              skip_ahead=skip_ahead)
 
