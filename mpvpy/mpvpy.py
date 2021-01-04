@@ -72,7 +72,10 @@ def play(*,
         file_hash = sha3_256_hash_file(media)
         ic(file_hash)
         try:
-            hashfilter(file_hash, None, verbose=verbose)
+            hashfilter(sha3_256=file_hash,
+                       group=None,
+                       verbose=verbose,
+                       debug=debug,)
         except BannedHashError as e:
             ic(e)
             ic('banned hash:', file_hash)
