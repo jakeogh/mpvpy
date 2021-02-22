@@ -23,10 +23,12 @@ from pathlib import Path
 
 import click
 import mpv
-from hashfilter.hashfilter import BannedHashError, hashfilter
+from hashfilter.hashfilter import BannedHashError
+from hashfilter.hashfilter import hashfilter
 from icecream import ic
 from jsonparser.jsonparser import jsonparser
-from kcl.clipboardops import get_clipboard, put_clipboard
+from kcl.clipboardops import get_clipboard
+from kcl.clipboardops import put_clipboard
 from kcl.hashops import sha3_256_hash_file
 from kcl.iterops import input_iterator
 from kcl.printops import eprint
@@ -35,8 +37,12 @@ from kcl.terminalops import in_xorg
 ic.configureOutput(includeContext=True)
 
 BAN = False
+PLAY_LATER = False
 
 class BanChanError(ValueError):
+    pass
+
+class PlayChanLaterError(ValueError):
     pass
 
 class BanClipboardError(ValueError):
@@ -165,6 +171,13 @@ def play(*,
         #pillow_img = player.screenshot_raw()
         #pillow_img.save('screenshot.png')
 
+    @player.on_key_press('L')
+    def my_b_binding():
+        global PLAY_LATER
+        PLAY_LATER = True
+        ic('PLAY_LATER:', chan)
+        player.quit()
+
     player.on_key_press('ENTER')(lambda: player.playlist_next(mode='force'))
 
     # ESC must be pressed 2x if the focus is on the terminal due to mpv design:
@@ -197,6 +210,11 @@ def play(*,
             else:
                 ic('raising BanChanError:', chan)
                 raise BanChanError(chan)
+
+        if PLAY_LATER:
+            ic('raising PlayChanLaterError:', chan)
+            raise PlayChanLaterError(chan)
+
         raise StopPlayingError
         #pass
 
