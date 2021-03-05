@@ -161,6 +161,10 @@ def play(*,
             else:
                 os.system("/usr/bin/iridb import {}".format(media.as_posix()))
 
+    @player.on_key_press('Meta+i')
+    def my_meta_i_binding():
+        ic('Meta+i works')
+
     @player.on_key_press('B')
     def my_s_binding():
         global BAN
