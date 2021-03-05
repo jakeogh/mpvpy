@@ -225,6 +225,7 @@ def play(*,
         raise StopPlayingError
         #pass
 
+    ic('calling player.terminate()')
     player.terminate()
 
     #if player.vo_configured:  # True when window is closed https://github.com/jaseg/python-mpv/issues/122
