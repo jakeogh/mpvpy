@@ -38,6 +38,7 @@ ic.configureOutput(includeContext=True)
 
 BAN = False
 PLAY_LATER = False
+QUIT = False
 
 class BanChanError(ValueError):
     pass
