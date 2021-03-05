@@ -137,11 +137,11 @@ def play(*,
     #player.on_key_press('ESC')(player.quit)
     #player.on_key_press('ENTER')(lambda: player.playlist_next(mode='force'))
 
-    @player.on_key_press('Ctrl+i')
-    def my_ctrl_i_binding():
-        ic('Ctrl+i works')
+    @player.on_key_press('Alt+i')
+    def my_alt_i_binding():
+        #ic('Alt+i works')
         media_ext = media.name.split(".")[-1]
-        ic(media_ext)
+        #ic(media_ext)
         #if media_ext:
         media_json_file = media.as_posix().replace("." + media_ext, ".info.json")
         ic(media_json_file)
