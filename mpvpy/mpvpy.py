@@ -139,7 +139,9 @@ def play(*,
 
     @player.on_key_press('Ctrl+i')
     def my_ctrl_i_binding():
+        ic('Ctrl+i works')
         media_ext = media.name.split(".")[-1]
+        ic(media_ext)
         #if media_ext:
         media_json_file = media.as_posix().replace("." + media_ext, ".info.json")
         ic(media_json_file)
