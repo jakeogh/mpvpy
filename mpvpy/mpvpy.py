@@ -163,6 +163,7 @@ def play(*,
                 os.system("su user -c \"/usr/bin/iridb import {}\"".format(media.as_posix()))
             else:
                 os.system("/usr/bin/iridb import {}".format(media.as_posix()))
+        ic('done with Alt+i routine')
 
     @player.on_key_press('Meta+i')
     def my_meta_i_binding():
@@ -185,7 +186,11 @@ def play(*,
         ic('PLAY_LATER:', chan)
         player.quit()
 
-    player.on_key_press('ENTER')(lambda: player.playlist_next(mode='force'))
+    #player.on_key_press('ENTER')(lambda: player.playlist_next(mode='force'))
+    @player.on_key_press('ENTER')
+    def my_enter_keybinding():
+        ic()
+        player.playlist_next(mode='force')
 
     # ESC must be pressed 2x if the focus is on the terminal due to mpv design:
     # https://github.com/jaseg/python-mpv/issues/122
