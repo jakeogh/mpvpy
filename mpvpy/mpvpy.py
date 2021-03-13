@@ -23,6 +23,7 @@ from pathlib import Path
 
 import click
 import mpv
+from enumerate_input import enumerate_input
 from hashfilter.hashfilter import BannedHashError
 from hashfilter.hashfilter import hashfilter
 from icecream import ic
@@ -30,11 +31,8 @@ from jsonparser.jsonparser import jsonparser
 from kcl.clipboardops import get_clipboard
 from kcl.clipboardops import put_clipboard
 from kcl.hashops import sha3_256_hash_file
-from kcl.iterops import input_iterator
 from kcl.printops import eprint
 from kcl.terminalops import in_xorg
-
-ic.configureOutput(includeContext=True)
 
 BAN = False
 PLAY_LATER = False
@@ -296,10 +294,14 @@ def cli(media,
         #ic(fullscreen)
         ic(skip_ahead)
 
-    for m in input_iterator(strings=media,
-                            random=random,
-                            null=null,
-                            verbose=verbose):
+    for index, m in enumerate_input(iterator=media,
+                                    random=random,
+                                    null=null,
+                                    skip=None,
+                                    head=None,
+                                    tail=None,
+                                    verbose=verbose,
+                                    debug=debug,):
         play(media=m,
              video=video,
              subtitles=subtitles,
