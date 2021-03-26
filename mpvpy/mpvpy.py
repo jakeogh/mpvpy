@@ -63,7 +63,8 @@ def play(*,
          loop: bool = False,
          skip_ahead: float = None,
          ban_clipboard: bool = False,
-         fullscreen: bool = False,):
+         fullscreen: bool = False,
+         ):
 
     global QUIT
     QUIT = False
@@ -286,7 +287,9 @@ def cli(media,
         skip_ahead,
         not_fullscreen,
         verbose: bool,
-        debug: bool,):
+        debug: bool,
+        ):
+
     video = not novideo
     null = not printn
     fullscreen = not not_fullscreen
