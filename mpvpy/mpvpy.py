@@ -171,7 +171,7 @@ def play(*,
     @player.on_key_press('D')
     def my_D_binding():
         ic('D works')
-        os.system('mv ' + '"' + media.as_posix() + '"' + '/delme/')
+        os.system('mv ' + '"' + media.as_posix() + '"' + ' /delme/')
 
     @player.on_key_press('B')
     def my_B_binding():
