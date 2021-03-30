@@ -168,8 +168,13 @@ def play(*,
     def my_meta_i_binding():
         ic('Meta+i works')
 
+    @player.on_key_press('D')
+    def my_D_binding():
+        ic('D works')
+        os.system('mv ' + '"' + media.as_posix() + '"' + '/delme/')
+
     @player.on_key_press('B')
-    def my_s_binding():
+    def my_B_binding():
         global BAN
         BAN = True
         ic('banning:', chan)
@@ -179,7 +184,7 @@ def play(*,
         #pillow_img.save('screenshot.png')
 
     @player.on_key_press('L')
-    def my_b_binding():
+    def my_L_binding():
         global PLAY_LATER
         PLAY_LATER = True
         ic('PLAY_LATER:', chan)
