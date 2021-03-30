@@ -58,7 +58,8 @@ def play(*,
          media,
          verbose: bool = False,
          debug: bool = False,
-         video: bool = True,
+         novideo: bool = False,
+         noaudio: bool = False,
          subtitles: bool = False,
          loop: bool = False,
          skip_ahead: float = None,
@@ -96,6 +97,8 @@ def play(*,
         chan = '/'.join(chan)
         #import IPython; IPython.embed()
 
+    video = not novideo
+    audio = not noaudio  # todo
     if video:
         video = 'auto'
 
@@ -275,6 +278,7 @@ def play(*,
 @click.command()
 @click.argument("media", nargs=-1)
 @click.option("--novideo", "--no-video", is_flag=True)
+@click.option("--noaudio", "--no-audio", is_flag=True)
 @click.option("--subtitles", is_flag=True)
 @click.option("--loop", is_flag=True)
 @click.option("--printn", is_flag=True)
@@ -285,6 +289,7 @@ def play(*,
 @click.option("--debug", is_flag=True)
 def cli(media,
         novideo,
+        noaudio,
         subtitles,
         loop,
         printn,
@@ -295,7 +300,7 @@ def cli(media,
         debug: bool,
         ):
 
-    video = not novideo
+    #video = not novideo
     null = not printn
     fullscreen = not not_fullscreen
     if verbose:
@@ -311,7 +316,8 @@ def cli(media,
                                     verbose=verbose,
                                     debug=debug,):
         play(media=m,
-             video=video,
+             novideo=novideo,
+             noaudio=noaudio,
              subtitles=subtitles,
              loop=loop,
              verbose=verbose,
