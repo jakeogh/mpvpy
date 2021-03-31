@@ -36,7 +36,7 @@ from kcl.terminalops import in_xorg
 
 BAN = False
 PLAY_LATER = False
-#QUIT = False
+QUIT = False
 
 class BanChanError(ValueError):
     pass
@@ -52,6 +52,27 @@ class StopPlayingError(ValueError):
 
 def logger(loglevel, component, message):
     print('[{}] {}: {}'.format(loglevel, component, message), file=sys.stderr)
+
+
+def check_for_banned_hash(*,
+                          media: Path,
+                          verbose: bool,
+                          debug: bool,
+                          ):
+
+    if "/sha3_256/" in media.as_posix():
+        ic('calculating sha3-256')
+        file_hash = sha3_256_hash_file(media)
+        ic(file_hash)
+        try:
+            hashfilter(sha3_256=file_hash,
+                       group=None,
+                       verbose=verbose,
+                       debug=debug,)
+        except BannedHashError as e:
+            ic(e)
+            ic('banned hash:', file_hash)
+            return True
 
 
 def play(*,
@@ -73,21 +94,11 @@ def play(*,
     BAN = False
     media = Path(media).absolute()
     ic(media.as_posix())
-    #eprint(media.as_posix())
 
-    if "/sha3_256/" in media.as_posix():
-        ic('calculating sha3-256')
-        file_hash = sha3_256_hash_file(media)
-        ic(file_hash)
-        try:
-            hashfilter(sha3_256=file_hash,
-                       group=None,
-                       verbose=verbose,
-                       debug=debug,)
-        except BannedHashError as e:
-            ic(e)
-            ic('banned hash:', file_hash)
-            return
+    if check_for_banned_hash(media=media,
+                             verbose=verbose,
+                             debug=debug):
+        return
 
     media_parts = media.parts
     if 'sources' in media_parts:
