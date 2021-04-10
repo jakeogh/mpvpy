@@ -176,7 +176,7 @@ def play(*,
             #    os.system("/home/user/bin/spider-iri 1 &")
         else:
             if os.getuid() == 0:
-                os.system("su user -c \"/usr/bin/iridb import {}\"".format(media.as_posix()))
+                os.system("su user -c \"/usr/bin/iridb import '{}'\"".format(media.as_posix()))
             else:
                 os.system("/usr/bin/iridb import {}".format(media.as_posix()))
         ic('done with Alt+i routine')
