@@ -50,6 +50,9 @@ class BanClipboardError(ValueError):
 class StopPlayingError(ValueError):
     pass
 
+class StopPlayingAfterError(ValueError):
+    pass
+
 def logger(loglevel, component, message):
     print('[{}] {}: {}'.format(loglevel, component, message), file=sys.stderr)
 
@@ -156,12 +159,12 @@ def play(*,
         media_ext = media.name.split(".")[-1]
         #ic(media_ext)
         #if media_ext:
-        media_json_file = media.as_posix().replace("." + media_ext, ".info.json")
-        ic(media_json_file)
         try:
+            media_json_file = media.as_posix().replace("." + media_ext, ".info.json")
+            ic(media_json_file)
             url = jsonparser(path=media_json_file, key="webpage_url")
             ic(url)
-        except UnicodeDecodeError:
+        except (UnicodeDecodeError, PermissionError):
             #ic(e)  # nope, will print the binary that was not json
             url = None
 
@@ -182,10 +185,10 @@ def play(*,
     def my_meta_i_binding():
         ic('Meta+i works')
 
-    @player.on_key_press('D')
+    @player.on_key_press('Meta+D')
     def my_D_binding():
-        ic('D works')
-        os.system('mv ' + '"' + media.as_posix() + '"' + ' /delme/')
+        ic('Meta+D works')
+        os.system('mv -vi ' + '"' + media.as_posix() + '"' + ' /delme/')
 
     @player.on_key_press('B')
     def my_B_binding():
@@ -199,6 +202,13 @@ def play(*,
 
     @player.on_key_press('L')
     def my_L_binding():
+        global PLAY_LATER
+        PLAY_LATER = True
+        ic('PLAY_LATER:', chan)
+        player.quit()
+
+    @player.on_key_press('Meta+L')
+    def my_meta_L_binding():
         global PLAY_LATER
         PLAY_LATER = True
         ic('PLAY_LATER:', chan)
