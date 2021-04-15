@@ -185,9 +185,9 @@ def play(*,
     def my_meta_i_binding():
         ic('Meta+i works')
 
-    @player.on_key_press('Meta+D')
+    @player.on_key_press('D')
     def my_D_binding():
-        ic('Meta+D works')
+        ic('D works')
         os.system('mv -vi ' + '"' + media.as_posix() + '"' + ' /delme/')
 
     @player.on_key_press('B')
