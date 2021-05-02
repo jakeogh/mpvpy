@@ -24,13 +24,13 @@ from pathlib import Path
 import click
 import mpv
 from enumerate_input import enumerate_input
+from hasher import sha3_256_hash_file
 from hashfilter.hashfilter import BannedHashError
 from hashfilter.hashfilter import hashfilter
 from icecream import ic
 from jsonparser.jsonparser import jsonparser
 from kcl.clipboardops import get_clipboard
 from kcl.clipboardops import put_clipboard
-from kcl.hashops import sha3_256_hash_file
 from kcl.printops import eprint
 from kcl.terminalops import in_xorg
 
