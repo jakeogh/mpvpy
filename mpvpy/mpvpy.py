@@ -117,7 +117,7 @@ def play(*,
                              debug=debug):
         return
 
-    assert 'sources' in media.parts
+    #assert 'sources' in media.parts
     chan = extract_chan(path=media, verbose=verbose, debug=debug)
 
     video = not novideo
