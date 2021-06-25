@@ -68,7 +68,7 @@ def extract_chan(path: Path,
         #ic(chan)
         chan = '/'.join(chan)
         return chan
-    raise ValueError('/ssources/ not in path: {}'.format(path.as_posix()))
+    raise ValueError('/sources/ not in path: {}'.format(path.as_posix()))
 
 
 def check_for_banned_hash(*,
@@ -118,7 +118,10 @@ def play(*,
         return
 
     #assert 'sources' in media.parts
-    chan = extract_chan(path=media, verbose=verbose, debug=debug)
+    try:
+        chan = extract_chan(path=media, verbose=verbose, debug=debug)
+    except ValueError:
+        chan = None
 
     video = not novideo
     audio = not noaudio  # todo
