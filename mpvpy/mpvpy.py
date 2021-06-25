@@ -348,11 +348,14 @@ def cli(media,
                                     verbose=verbose,
                                     debug=debug,):
         path = Path(os.fsdecode(m))
-        chan = extract_chan(path=path,
-                            verbose=verbose,
-                            debug=debug,)
-        if chan in skip_set:
-            continue
+        try:
+            chan = extract_chan(path=path,
+                                verbose=verbose,
+                                debug=debug,)
+            if chan in skip_set:
+                continue
+        except ValueError:
+            pass
 
         try:
             play(media=m,
