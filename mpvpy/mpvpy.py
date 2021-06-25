@@ -57,6 +57,20 @@ def logger(loglevel, component, message):
     print('[{}] {}: {}'.format(loglevel, component, message), file=sys.stderr)
 
 
+def extract_chan(path: Path,
+                 verbose: bool,
+                 debug: bool,
+                 ):
+    path_parts = path.parts
+    if 'sources' in path_parts:
+        sources_index = path_parts.index('sources')
+        chan = path_parts[sources_index + 1:sources_index + 3]
+        #ic(chan)
+        chan = '/'.join(chan)
+        return chan
+    raise ValueError('/ssources/ not in path: {}'.format(path.as_posix()))
+
+
 def check_for_banned_hash(*,
                           media: Path,
                           verbose: bool,
@@ -103,13 +117,8 @@ def play(*,
                              debug=debug):
         return
 
-    media_parts = media.parts
-    if 'sources' in media_parts:
-        sources_index = media_parts.index('sources')
-        chan = media_parts[sources_index + 1:sources_index + 3]
-        #ic(chan)
-        chan = '/'.join(chan)
-        #import IPython; IPython.embed()
+    assert 'sources' in media.parts
+    chan = extract_chan(path=media, verbose=verbose, debug=debug)
 
     video = not novideo
     audio = not noaudio  # todo
@@ -328,6 +337,8 @@ def cli(media,
         #ic(fullscreen)
         ic(skip_ahead)
 
+    skip_set = set()
+
     for index, m in enumerate_input(iterator=media,
                                     random=random,
                                     null=null,
@@ -336,13 +347,24 @@ def cli(media,
                                     tail=None,
                                     verbose=verbose,
                                     debug=debug,):
-        play(media=m,
-             novideo=novideo,
-             noaudio=noaudio,
-             subtitles=subtitles,
-             loop=loop,
-             verbose=verbose,
-             debug=debug,
-             fullscreen=fullscreen,
-             skip_ahead=skip_ahead)
+        path = Path(os.fsdecode(m))
+        chan = extract_chan(path=path,
+                            verbose=verbose,
+                            debug=debug,)
+        if chan in skip_set:
+            continue
 
+        try:
+            play(media=m,
+                 novideo=novideo,
+                 noaudio=noaudio,
+                 subtitles=subtitles,
+                 loop=loop,
+                 verbose=verbose,
+                 debug=debug,
+                 fullscreen=fullscreen,
+                 skip_ahead=skip_ahead,)
+
+        except PlayChanLaterError as e:
+            chan = e.args[0]
+            skip_set.add(chan)
