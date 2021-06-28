@@ -24,19 +24,32 @@ from pathlib import Path
 import click
 import mpv
 from enumerate_input import enumerate_input
-from hasher import sha3_256_hash_file
 from hashfilter.hashfilter import BannedHashError
 from hashfilter.hashfilter import hashfilter
-from icecream import ic
+from hashtool import sha3_256_hash_file
 from jsonparser.jsonparser import jsonparser
 from kcl.clipboardops import get_clipboard
 from kcl.clipboardops import put_clipboard
-from kcl.printops import eprint
 from kcl.terminalops import in_xorg
 
 BAN = False
 PLAY_LATER = False
 QUIT = False
+
+
+def eprint(*args, **kwargs):
+    if 'file' in kwargs.keys():
+        kwargs.pop('file')
+    print(*args, file=sys.stderr, **kwargs)
+
+
+try:
+    from icecream import ic  # https://github.com/gruns/icecream
+    from icecream import icr  # https://github.com/jakeogh/icecream
+except ImportError:
+    ic = eprint
+    icr = eprint
+
 
 class BanChanError(ValueError):
     pass
@@ -60,7 +73,7 @@ def logger(loglevel, component, message):
 def extract_chan(path: Path,
                  verbose: bool,
                  debug: bool,
-                 ):
+                 ) -> str:
     path_parts = path.parts
     if 'sources' in path_parts:
         sources_index = path_parts.index('sources')
