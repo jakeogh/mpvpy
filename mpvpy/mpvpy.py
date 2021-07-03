@@ -161,6 +161,7 @@ def play(*,
         player.gpu_context = "auto"
     else:
         player.vo = 'gpu'
+        player.hwdec = 'vaapi'
 
     if fullscreen:
         player.fullscreen = True
