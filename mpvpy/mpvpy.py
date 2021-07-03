@@ -159,6 +159,8 @@ def play(*,
     if not in_xorg():
         player.vo = "drm"
         player.gpu_context = "auto"
+    else:
+        player.vo = 'gpu'
 
     if fullscreen:
         player.fullscreen = True
