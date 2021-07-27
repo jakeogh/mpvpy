@@ -20,35 +20,25 @@
 import os
 import sys
 from pathlib import Path
+from typing import Optional
 
 import click
 import mpv
+from asserttool import eprint
+from asserttool import ic
+from asserttool import nevd
+from clipboardtool import get_clipboard
+from clipboardtool import put_clipboard
 from enumerate_input import enumerate_input
 from hashfilter.hashfilter import BannedHashError
 from hashfilter.hashfilter import hashfilter
 from hashtool import sha3_256_hash_file
 from jsonparser.jsonparser import jsonparser
-from kcl.clipboardops import get_clipboard
-from kcl.clipboardops import put_clipboard
-from kcl.terminalops import in_xorg
+from terminaltool import in_xorg
 
 BAN = False
 PLAY_LATER = False
 QUIT = False
-
-
-def eprint(*args, **kwargs):
-    if 'file' in kwargs.keys():
-        kwargs.pop('file')
-    print(*args, file=sys.stderr, **kwargs)
-
-
-try:
-    from icecream import ic  # https://github.com/gruns/icecream
-    from icecream import icr  # https://github.com/jakeogh/icecream
-except ImportError:
-    ic = eprint
-    icr = eprint
 
 
 class BanChanError(ValueError):
@@ -103,6 +93,7 @@ def check_for_banned_hash(*,
             ic(e)
             ic('banned hash:', file_hash)
             return True
+    return False
 
 
 def play(*,
@@ -113,7 +104,7 @@ def play(*,
          noaudio: bool = False,
          subtitles: bool = False,
          loop: bool = False,
-         skip_ahead: float = None,
+         skip_ahead: Optional[float] = None,
          ban_clipboard: bool = False,
          fullscreen: bool = False,
          ):
