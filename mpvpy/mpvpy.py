@@ -351,10 +351,6 @@ def cli(media,
 
     for index, m in enumerate_input(iterator=media,
                                     random=random,
-                                    null=null,
-                                    skip=None,
-                                    head=None,
-                                    tail=None,
                                     verbose=verbose,
                                     debug=debug,):
         path = Path(os.fsdecode(m))
