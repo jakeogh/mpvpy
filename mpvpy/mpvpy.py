@@ -158,7 +158,8 @@ def play(*,
         player.fullscreen = True
 
     if loop:
-        player.loop_playlist = 'inf'
+        #player.loop_playlist = 'inf'
+        player.loop_file = 'inf'
 
     if subtitles:
         player.sub = "yes"
