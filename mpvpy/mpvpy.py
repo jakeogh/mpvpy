@@ -343,7 +343,7 @@ def cli(media: Optional[tuple[str]],
     fullscreen = not not_fullscreen
     if verbose:
         #ic(fullscreen)
-        ic(skip_ahead)
+        ic(media, skip_ahead)
 
     skip_set = set()
 
