@@ -322,27 +322,24 @@ def play(*,
 @click.option("--noaudio", "--no-audio", is_flag=True)
 @click.option("--subtitles", is_flag=True)
 @click.option("--loop", is_flag=True)
-@click.option("--printn", is_flag=True)
 @click.option("--random", is_flag=True)
 @click.option("--skip-ahead", type=int)
 @click.option("--not-fullscreen", "--not-fs", is_flag=True)
 @click.option("--verbose", is_flag=True)
 @click.option("--debug", is_flag=True)
-def cli(media,
-        novideo,
-        noaudio,
-        subtitles,
-        loop,
-        printn,
-        random,
-        skip_ahead,
+def cli(media: Optional[tuple[str]],
+        novideo: bool,
+        noaudio: bool,
+        subtitles: bool,
+        loop: bool,
+        random: bool,
+        skip_ahead: int,
         not_fullscreen,
         verbose: bool,
         debug: bool,
         ):
 
     #video = not novideo
-    null = not printn
     fullscreen = not not_fullscreen
     if verbose:
         #ic(fullscreen)
@@ -355,6 +352,8 @@ def cli(media,
                                     verbose=verbose,
                                     debug=debug,):
         path = Path(os.fsdecode(m))
+        if verbose:
+            ic(path)
         try:
             chan = extract_chan(path=path,
                                 verbose=verbose,
