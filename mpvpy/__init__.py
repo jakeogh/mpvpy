@@ -1,0 +1,1 @@
+from .mpvpy import play
