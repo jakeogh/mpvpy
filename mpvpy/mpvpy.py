@@ -369,7 +369,7 @@ def cli(media: Optional[tuple[str]],
             pass
 
         try:
-            play(media=m,
+            play(media=path,
                  novideo=novideo,
                  noaudio=noaudio,
                  subtitles=subtitles,
