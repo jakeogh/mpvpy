@@ -19,6 +19,7 @@
 
 import os
 import sys
+from math import inf
 from pathlib import Path
 from typing import Optional
 
@@ -26,15 +27,18 @@ import click
 import mpv
 from asserttool import eprint
 from asserttool import ic
-from asserttool import nevd
+from clicktool import click_add_options
+from clicktool import click_global_options
+#from asserttool import nevd
 from clipboardtool import get_clipboard
 from clipboardtool import put_clipboard
-from enumerate_input import enumerate_input
+#from enumerate_input import enumerate_input
 from hashfilter.hashfilter import BannedHashError
 from hashfilter.hashfilter import hashfilter
 from hashtool import sha3_256_hash_file
 from jsonparser.jsonparser import jsonparser
 from terminaltool import in_xorg
+from unmp import unmp
 
 BAN = False
 PLAY_LATER = False
@@ -61,8 +65,7 @@ def logger(loglevel, component, message):
 
 
 def extract_chan(path: Path,
-                 verbose: bool,
-                 debug: bool,
+                 verbose: int,
                  ) -> str:
     path_parts = path.parts
     if 'sources' in path_parts:
@@ -76,8 +79,7 @@ def extract_chan(path: Path,
 
 def check_for_banned_hash(*,
                           media: Path,
-                          verbose: bool,
-                          debug: bool,
+                          verbose: int,
                           ):
 
     if "/sha3_256/" in media.as_posix():
@@ -88,7 +90,7 @@ def check_for_banned_hash(*,
             hashfilter(sha3_256=file_hash,
                        group=None,
                        verbose=verbose,
-                       debug=debug,)
+                       )
         except BannedHashError as e:
             ic(e)
             ic('banned hash:', file_hash)
@@ -98,8 +100,7 @@ def check_for_banned_hash(*,
 
 def play(*,
          media,
-         verbose: bool = False,
-         debug: bool = False,
+         verbose: int = False,
          novideo: bool = False,
          noaudio: bool = False,
          subtitles: bool = False,
@@ -118,12 +119,12 @@ def play(*,
 
     if check_for_banned_hash(media=media,
                              verbose=verbose,
-                             debug=debug):
+                             ):
         return
 
     #assert 'sources' in media.parts
     try:
-        chan = extract_chan(path=media, verbose=verbose, debug=debug)
+        chan = extract_chan(path=media, verbose=verbose,)
     except ValueError:
         chan = None
 
@@ -325,8 +326,7 @@ def play(*,
 @click.option("--random", is_flag=True)
 @click.option("--skip-ahead", type=int)
 @click.option("--not-fullscreen", "--not-fs", is_flag=True)
-@click.option("--verbose", is_flag=True)
-@click.option("--debug", is_flag=True)
+@click_add_options(click_global_options)
 def cli(media: Optional[tuple[str]],
         novideo: bool,
         noaudio: bool,
@@ -335,8 +335,8 @@ def cli(media: Optional[tuple[str]],
         random: bool,
         skip_ahead: int,
         not_fullscreen,
-        verbose: bool,
-        debug: bool,
+        verbose: int,
+        verbose_inf: bool,
         ):
 
     #video = not novideo
@@ -346,18 +346,23 @@ def cli(media: Optional[tuple[str]],
         ic(media, skip_ahead)
 
     skip_set = set()
+    if media:
+        iterator = media
+    else:
+        iterator = unmp(verbose=verbose, valid_types=[bytes,])
 
-    for index, m in enumerate_input(iterator=media,
-                                    random=random,
-                                    verbose=verbose,
-                                    debug=debug,):
+    for index, m in enumerate(iterator):
+    #for index, m in enumerate_input(iterator=media,
+    #                                random=random,
+    #                                verbose=verbose,
+    #                                ):
         path = Path(os.fsdecode(m))
         if verbose:
             ic(path)
         try:
             chan = extract_chan(path=path,
                                 verbose=verbose,
-                                debug=debug,)
+                                )
             if chan in skip_set:
                 continue
         except ValueError:
@@ -370,7 +375,6 @@ def cli(media: Optional[tuple[str]],
                  subtitles=subtitles,
                  loop=loop,
                  verbose=verbose,
-                 debug=debug,
                  fullscreen=fullscreen,
                  skip_ahead=skip_ahead,)
 
