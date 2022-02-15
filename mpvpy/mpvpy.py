@@ -22,17 +22,18 @@ import sys
 from math import inf
 from pathlib import Path
 from typing import Optional
+from typing import Union
 
 import click
 import mpv
-from asserttool import eprint
 from asserttool import ic
 from clicktool import click_add_options
 from clicktool import click_global_options
-#from asserttool import nevd
+from clicktool import tv
 from clipboardtool import get_clipboard
 from clipboardtool import put_clipboard
-#from enumerate_input import enumerate_input
+from eprint import eprint
+#from unmp import unmp
 from hashfilter.hashfilter import BannedHashError
 from hashfilter.hashfilter import hashfilter
 from hashtool import sha3_256_hash_file
@@ -65,7 +66,7 @@ def logger(loglevel, component, message):
 
 
 def extract_chan(path: Path,
-                 verbose: int,
+                 verbose: Union[bool, int, float],
                  ) -> str:
     path_parts = path.parts
     if 'sources' in path_parts:
@@ -79,7 +80,7 @@ def extract_chan(path: Path,
 
 def check_for_banned_hash(*,
                           media: Path,
-                          verbose: int,
+                          verbose: Union[bool, int, float],
                           ):
 
     if "/sha3_256/" in media.as_posix():
@@ -190,7 +191,7 @@ def play(*,
             url = None
 
         if url:
-            put_clipboard(url)
+            put_clipboard(url, verbose=verbose,)
             if os.getuid() == 0:
                 os.system("su user -c \"/home/user/bin/spider-iri 1\" &")
             else:
@@ -265,7 +266,7 @@ def play(*,
         player.terminate()
         if BAN:
             if ban_clipboard:
-                clipboard = get_clipboard(one_line=True)
+                clipboard = get_clipboard(one_line=True, verbose=verbose,)
                 ic('raising BanClipboardError:', clipboard)
                 raise BanClipboardError(clipboard)
             else:
@@ -335,7 +336,7 @@ def cli(media: Optional[tuple[str]],
         random: bool,
         skip_ahead: int,
         not_fullscreen,
-        verbose: int,
+        verbose: Union[bool, int, float],
         verbose_inf: bool,
         ):
 
