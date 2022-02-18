@@ -33,13 +33,13 @@ from clicktool import tv
 from clipboardtool import get_clipboard
 from clipboardtool import put_clipboard
 from eprint import eprint
-#from unmp import unmp
+#from mptool import unmp
 from hashfilter.hashfilter import BannedHashError
 from hashfilter.hashfilter import hashfilter
 from hashtool import sha3_256_hash_file
 from jsonparser.jsonparser import jsonparser
+from mptool import unmp
 from terminaltool import in_xorg
-from unmp import unmp
 
 BAN = False
 PLAY_LATER = False
@@ -85,7 +85,7 @@ def check_for_banned_hash(*,
 
     if "/sha3_256/" in media.as_posix():
         ic('calculating sha3-256')
-        file_hash = sha3_256_hash_file(media)
+        file_hash = sha3_256_hash_file(media, verbose=verbose,)
         ic(file_hash)
         try:
             hashfilter(sha3_256=file_hash,
@@ -101,7 +101,7 @@ def check_for_banned_hash(*,
 
 def play(*,
          media,
-         verbose: int = False,
+         verbose: Union[bool, int, float],
          novideo: bool = False,
          noaudio: bool = False,
          subtitles: bool = False,
@@ -149,7 +149,7 @@ def play(*,
     # self.m = mpv.MPV(vo='x11')
     #ic(get_current_virtural_terminal())
 
-    if not in_xorg():
+    if not in_xorg(verbose=verbose):
         player.vo = "drm"
         player.gpu_context = "auto"
     else:
