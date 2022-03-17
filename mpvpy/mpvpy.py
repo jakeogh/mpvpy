@@ -95,7 +95,7 @@ def check_for_banned_hash(
         file_hash = sha3_256_hash_file(
             media,
             verbose=verbose,
-        )
+        ).hex()
         ic(file_hash)
         try:
             hashfilter(
