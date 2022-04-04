@@ -386,10 +386,6 @@ def cli(
         )
 
     for index, m in enumerate(iterator):
-        # for index, m in enumerate_input(iterator=media,
-        #                                random=random,
-        #                                verbose=verbose,
-        #                                ):
         path = Path(os.fsdecode(m))
         if verbose:
             ic(path)
